@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using TarodevController;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public enum PlayerState
 {
@@ -14,12 +16,24 @@ public struct FrameInput
 {
     public bool JumpDown;
     public bool JumpHeld;
+    public bool DashDown;
     public Vector2 Move;
 }
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] ScriptableStats stats;
+
+    [SerializeField] private int maxAirJumps = 1;
+    private int airJumpsLeft = 0;
+
+    [SerializeField] private float dashSpeed = 20f;
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 0.1f;
+    private bool isDashing;
+    private bool canDash = true;
+    private float dashTime;
+
     Rigidbody2D rb;
     CapsuleCollider2D col;
     Vector2 frameVelocity;
@@ -27,7 +41,7 @@ public class PlayerController : MonoBehaviour
     PlayerState currentState = PlayerState.Idle;
 
     public FrameInput FrameInput { get; private set; }
-    public Action<PlayerState> OnStateChange; 
+    public Action<PlayerState> OnStateChange;
 
     void Awake()
     {
@@ -57,6 +71,7 @@ public class PlayerController : MonoBehaviour
         {
             JumpDown = Input.GetButtonDown("Jump"),
             JumpHeld = Input.GetButton("Jump"),
+            DashDown = Input.GetKey(KeyCode.LeftShift),
             Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
         };
 
@@ -77,6 +92,7 @@ public class PlayerController : MonoBehaviour
         HandleJump();
         HandleDirection();
         HandleGravity();
+        HandleDash();
 
         ApplyMovement();
     }
@@ -103,6 +119,8 @@ public class PlayerController : MonoBehaviour
             coyoteUsable = true;
             bufferedJumpUsable = true;
             endedJumpEarly = false;
+
+            airJumpsLeft = maxAirJumps;
         }
 
         // Left the Ground
@@ -130,7 +148,7 @@ public class PlayerController : MonoBehaviour
             endedJumpEarly = true;
         }
 
-        if(rb.linearVelocity.y < 0)
+        if (rb.linearVelocity.y < 0)
         {
             ChangeState(PlayerState.Falling);
         }
@@ -141,12 +159,27 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        //handle jumping from the ground or in the air (double, triple jump)
         if (grounded || CanUseCoyote)
         {
-            ExecuteJump();
+            HandleGroundedJump();
+        }
+        else if (airJumpsLeft > 0)
+        {
+            HandleAirJump();
         }
 
         jumpToConsume = false;
+    }
+
+    void HandleGroundedJump()
+    {
+        ExecuteJump();
+    }
+    void HandleAirJump()
+    {
+        airJumpsLeft--;
+        ExecuteJump();
     }
 
     void ExecuteJump()
@@ -172,7 +205,7 @@ public class PlayerController : MonoBehaviour
             frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, FrameInput.Move.x * stats.MaxSpeed, stats.Acceleration * Time.fixedDeltaTime);
         }
 
-        if(grounded && currentState != PlayerState.Jumping)
+        if (grounded && currentState != PlayerState.Jumping)
         {
             if (Mathf.Abs(FrameInput.Move.x) > 0.1f)
             {
@@ -211,6 +244,42 @@ public class PlayerController : MonoBehaviour
 
             frameVelocity.y = Mathf.MoveTowards(frameVelocity.y, -stats.MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
         }
+    }
+
+    void HandleDash()
+    {
+        if (isDashing)
+        {
+            if (Time.time >= dashTime)
+            {
+                isDashing = false;
+                frameVelocity.x *= 0.5f;
+            }
+            return;
+        }
+
+        bool canPerformDash = (canDash && FrameInput.Move.x != 0);
+
+        if (FrameInput.DashDown && canPerformDash)
+        {
+            StartDash();
+        }
+    }
+
+    void StartDash()
+    {
+        isDashing = true;
+        dashTime = Time.time + dashDuration;
+        frameVelocity.x = dashSpeed * Mathf.Sign(FrameInput.Move.x);
+
+        canDash = false;
+        StartCoroutine(DashCooldownRoutine());
+    }
+
+    IEnumerator DashCooldownRoutine()
+    {
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
     }
 
     void ApplyMovement()

@@ -878,6 +878,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: maxAirJumps
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: dashCooldown
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
