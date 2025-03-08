@@ -121,7 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 122461718103161041}
   - component: {fileID: 4517872887065300171}
-  - component: {fileID: -4065059772431388689}
+  - component: {fileID: 6808983669942234509}
   - component: {fileID: 2656341398056932823}
   - component: {fileID: 5938865398358182671}
   m_Layer: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 0.1
---- !u!114 &-4065059772431388689
+--- !u!114 &6808983669942234509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 12
   alwaysInvincible: 0
-  invincibilityFrameCount: 20
+  invincibilityFrameCount: 5
 --- !u!50 &2656341398056932823
 Rigidbody2D:
   serializedVersion: 5
