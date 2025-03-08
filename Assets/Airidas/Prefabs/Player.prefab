@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 122461718103161041}
   - component: {fileID: 4517872887065300171}
+  - component: {fileID: -4065059772431388689}
   - component: {fileID: 2656341398056932823}
   - component: {fileID: 5938865398358182671}
   m_Layer: 0
@@ -159,6 +160,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 105f6a00a3948374fb10b5ce23dcf84f, type: 2}
+  maxAirJumps: 1
+  dashSpeed: 20
+  dashDuration: 0.2
+  dashCooldown: 0.1
+--- !u!114 &-4065059772431388689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3554813497592685139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc2edc1d2050ce945b6f60f54f7b95f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 12
+  alwaysInvincible: 0
+  invincibilityFrameCount: 20
 --- !u!50 &2656341398056932823
 Rigidbody2D:
   serializedVersion: 5
