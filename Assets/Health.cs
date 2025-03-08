@@ -27,7 +27,7 @@ public class Health : MonoBehaviour
     [SerializeField] private int health = 12;
     [SerializeField] private bool alwaysInvincible = false;
     [SerializeField] private int invincibilityFrameCount = 5;
-    private int thrust = 10000;
+    private int thrust = 5000;
 
     Vector2 initialPosition;
     private int updateCount = 0;
