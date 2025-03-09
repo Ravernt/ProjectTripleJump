@@ -24694,6 +24694,8 @@ MonoBehaviour:
   health: 12
   alwaysInvincible: 0
   invincibilityFrameCount: 5
+  respawnPoint: {fileID: 0}
+  spriteRenderer: {fileID: 7209988447790907694}
 --- !u!50 &2656341398056932823
 Rigidbody2D:
   serializedVersion: 5

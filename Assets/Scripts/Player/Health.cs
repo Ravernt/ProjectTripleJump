@@ -7,11 +7,9 @@ public class Health : MonoBehaviour
     /// <summary>
     /// Need to add a way to communicate that the player died or got hurt
     /// 
-    /// current update frame counting way is inefficient and can lead to int overflow
     /// 
     /// The damage bounce is too fast
     /// 
-    /// Need to respawn the player at a respawn position instead of the initial one
     /// </summary>
     /// 
 
@@ -21,12 +19,15 @@ public class Health : MonoBehaviour
     {
         //gets the player information
         player = GetComponent<Rigidbody2D>();
-        initialPosition = transform.position;
+        initialPosition = respawnPoint.position;
     }
+
 
     [SerializeField] private int health = 12;
     [SerializeField] private bool alwaysInvincible = false;
     [SerializeField] private int invincibilityFrameCount = 5;
+    [SerializeField] Transform respawnPoint;
+    [SerializeField] SpriteRenderer spriteRenderer;
     private int thrust = 5000;
 
     Vector2 initialPosition;
@@ -37,7 +38,12 @@ public class Health : MonoBehaviour
     void FixedUpdate()
     {
         updateCount++;
-
+        if(updateCount>=65536 && !invincible)
+            updateCount = 0;
+        if(!invincible)
+        {
+            spriteRenderer.color = Color.white;
+        }
         if (invincible && (updateCount - invincibilityStart) >= invincibilityFrameCount)
         {
             //removes invincibility once the invincibility frame count runs out
@@ -45,6 +51,8 @@ public class Health : MonoBehaviour
         }
         if (health <= 0 && !alwaysInvincible)
         {
+            spriteRenderer.color = Color.red;
+            
             //respawns the player at a set position
             transform.position = initialPosition;
             
@@ -56,18 +64,18 @@ public class Health : MonoBehaviour
     {
         if(collision.collider.tag == "Hurtful")
         {
-            if(!invincible && !alwaysInvincible)
+            //adds a force away from the spike, so that the player doesn't rub against it
+            float xValue = transform.position.x - collision.transform.position.x;
+            float yValue = transform.position.y - collision.transform.position.y;
+            Vector2 direction = new(xValue, yValue);
+            player.AddForce(direction * thrust);
+            spriteRenderer.color = Color.red;
+            if (!invincible && !alwaysInvincible)
             {
                 //removes health and starts invincibility frames
                 health -= 4;
                 invincible = true;
                 invincibilityStart = updateCount;
-
-                //adds a force away from the spike, so that the player doesn't rub against it
-                float xValue = transform.position.x-collision.transform.position.x;
-                float yValue = transform.position.y-collision.transform.position.y;
-                Vector2 direction = new(xValue, yValue);
-                player.AddForce(direction * thrust);
             }
             
         }
