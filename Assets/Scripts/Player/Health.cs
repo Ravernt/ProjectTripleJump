@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
     /// <summary>
-    /// Need to add a way to communicate that the player died or got hurt
+    /// 
     /// 
     /// 
     /// The damage bounce is too fast
@@ -19,28 +20,42 @@ public class Health : MonoBehaviour
     {
         //gets the player information
         player = GetComponent<Rigidbody2D>();
-        initialPosition = respawnPoint.position;
-    }
 
+        if (respawnPoint != null)
+        {
+            initialPosition = respawnPoint.position;
+        }
+        else
+        {
+            // usses current position as respawn point
+            initialPosition = transform.position;
+        }
+
+        InitializeBlackoutPanel();
+    }
 
     [SerializeField] private int health = 12;
     [SerializeField] private bool alwaysInvincible = false;
     [SerializeField] private int invincibilityFrameCount = 5;
     [SerializeField] Transform respawnPoint;
     [SerializeField] SpriteRenderer spriteRenderer;
-    private int thrust = 5000;
+    [SerializeField] private float fadeSpeed = 2.0f;
 
+    private int thrust = 5000;
     Vector2 initialPosition;
     private int updateCount = 0;
     private bool invincible = false;
     private int invincibilityStart;
+    private GameObject blackoutPanel;
+    private CanvasGroup blackoutCanvasGroup;
+    private bool isRespawning = false;
 
     void FixedUpdate()
     {
         updateCount++;
-        if(updateCount>=65536 && !invincible)
+        if (updateCount >= 65536 && !invincible)
             updateCount = 0;
-        if(!invincible)
+        if (!invincible)
         {
             spriteRenderer.color = Color.white;
         }
@@ -52,17 +67,18 @@ public class Health : MonoBehaviour
         if (health <= 0 && !alwaysInvincible)
         {
             spriteRenderer.color = Color.red;
-            
-            //respawns the player at a set position
-            transform.position = initialPosition;
-            
-            health = 12;
+
+            // Start the blackout and respawn process if not already in progress
+            if (!isRespawning)
+            {
+                StartCoroutine(BlackoutAndRespawn());
+            }
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.tag == "Hurtful")
+        if (collision.collider.tag == "Hurtful")
         {
             //adds a force away from the spike, so that the player doesn't rub against it
             float xValue = transform.position.x - collision.transform.position.x;
@@ -77,7 +93,6 @@ public class Health : MonoBehaviour
                 invincible = true;
                 invincibilityStart = updateCount;
             }
-            
         }
     }
 
@@ -94,4 +109,58 @@ public class Health : MonoBehaviour
         }
     }
 
+    private void InitializeBlackoutPanel()
+    {
+        Canvas canvas = FindObjectOfType<Canvas>();
+        if (canvas == null)
+        {
+            GameObject canvasObject = new GameObject("BlackoutCanvas");
+            canvas = canvasObject.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvasObject.AddComponent<CanvasScaler>();
+            canvasObject.AddComponent<GraphicRaycaster>();
+        }
+
+        blackoutPanel = new GameObject("BlackoutPanel");
+        blackoutPanel.transform.SetParent(canvas.transform, false);
+
+        UnityEngine.UI.Image image = blackoutPanel.AddComponent<UnityEngine.UI.Image>();
+        image.color = Color.black;
+
+        RectTransform rectTransform = blackoutPanel.GetComponent<RectTransform>();
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.sizeDelta = Vector2.zero;
+
+        blackoutCanvasGroup = blackoutPanel.AddComponent<CanvasGroup>();
+        blackoutCanvasGroup.alpha = 0;
+        blackoutCanvasGroup.blocksRaycasts = false;
+    }
+
+    private IEnumerator BlackoutAndRespawn()
+    {
+        isRespawning = true;
+
+        // Fade to black
+        while (blackoutCanvasGroup.alpha < 1)
+        {
+            blackoutCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
+            yield return null;
+        }
+
+        // respawn the player
+        transform.position = initialPosition;
+        health = 12;
+
+        yield return new WaitForSeconds(0.5f);
+
+        // Fade back from black
+        while (blackoutCanvasGroup.alpha > 0)
+        {
+            blackoutCanvasGroup.alpha -= Time.deltaTime * fadeSpeed;
+            yield return null;
+        }
+
+        isRespawning = false;
+    }
 }
