@@ -17,7 +17,7 @@ MonoBehaviour:
     m_Bits: 8
   CollisionLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   MaxSpeed: 5
   Acceleration: 60
   GroundDeceleration: 40

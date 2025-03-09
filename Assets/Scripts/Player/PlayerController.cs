@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
-using TarodevController;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 
 public enum PlayerState
 {
     Idle,
     Running,
     Jumping,
-    Falling
+    Falling,
+    DoubleJumping,
+    Dashing
 }
 
 public struct FrameInput
@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private bool isDashing;
     private bool canDash = true;
     private float dashTime;
+    private float dashDirection;
 
     Rigidbody2D rb;
     CapsuleCollider2D col;
@@ -148,7 +149,7 @@ public class PlayerController : MonoBehaviour
             endedJumpEarly = true;
         }
 
-        if (rb.linearVelocity.y < 0)
+        if (currentState != PlayerState.Dashing && rb.linearVelocity.y < 0)
         {
             ChangeState(PlayerState.Falling);
         }
@@ -180,6 +181,7 @@ public class PlayerController : MonoBehaviour
     {
         airJumpsLeft--;
         ExecuteJump();
+        ChangeState(PlayerState.DoubleJumping);
     }
 
     void ExecuteJump()
@@ -205,7 +207,7 @@ public class PlayerController : MonoBehaviour
             frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, FrameInput.Move.x * stats.MaxSpeed, stats.Acceleration * Time.fixedDeltaTime);
         }
 
-        if (grounded && currentState != PlayerState.Jumping)
+        if (grounded && (currentState == PlayerState.Idle || currentState == PlayerState.Running || currentState == PlayerState.Falling))
         {
             if (Mathf.Abs(FrameInput.Move.x) > 0.1f)
             {
@@ -230,6 +232,13 @@ public class PlayerController : MonoBehaviour
     private void HandleGravity()
     {
         //gravity stuff
+
+        if(currentState == PlayerState.Dashing)
+        {
+            frameVelocity.y = 0;
+            return;
+        }
+
         if (grounded && frameVelocity.y <= 0f)
         {
             frameVelocity.y = stats.GroundingForce;
@@ -250,10 +259,12 @@ public class PlayerController : MonoBehaviour
     {
         if (isDashing)
         {
+            frameVelocity.x = dashSpeed * dashDirection;
             if (Time.time >= dashTime)
             {
                 isDashing = false;
                 frameVelocity.x *= 0.5f;
+                ChangeState(PlayerState.Falling);
             }
             return;
         }
@@ -270,7 +281,8 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         dashTime = Time.time + dashDuration;
-        frameVelocity.x = dashSpeed * Mathf.Sign(FrameInput.Move.x);
+        dashDirection = Mathf.Sign(FrameInput.Move.x);
+        ChangeState(PlayerState.Dashing);
 
         canDash = false;
         StartCoroutine(DashCooldownRoutine());
