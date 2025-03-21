@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
     public FrameInput FrameInput { get; private set; }
     public Action<PlayerState> OnStateChange;
 
+    bool isKnockedBack = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -296,7 +298,20 @@ public class PlayerController : MonoBehaviour
 
     void ApplyMovement()
     {
-        //applies calculated velocity to rigidbody
-        rb.linearVelocity = frameVelocity;
+        //applies calculated velocity to rigidbody'
+        if(!isKnockedBack)
+            rb.linearVelocity = frameVelocity;
+    }
+
+    public void ApplyForce(Vector2 force, float duration)
+    {
+        isKnockedBack = true;
+        rb.AddForce(force, ForceMode2D.Impulse);
+        Invoke(nameof(ResetKnockback), duration);
+    }
+
+    void ResetKnockback()
+    {
+        isKnockedBack = false;
     }
 }

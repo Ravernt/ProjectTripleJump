@@ -34,6 +34,7 @@ public class Health : MonoBehaviour
         InitializeBlackoutPanel();
     }
 
+    [SerializeField] PlayerController playerController;
     [SerializeField] private int health = 12;
     [SerializeField] private bool alwaysInvincible = false;
     [SerializeField] private int invincibilityFrameCount = 5;
@@ -41,7 +42,7 @@ public class Health : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] private float fadeSpeed = 2.0f;
 
-    private int thrust = 5000;
+    private float thrust = 4f;
     Vector2 initialPosition;
     private int updateCount = 0;
     private bool invincible = false;
@@ -49,6 +50,7 @@ public class Health : MonoBehaviour
     private GameObject blackoutPanel;
     private CanvasGroup blackoutCanvasGroup;
     private bool isRespawning = false;
+
 
     void FixedUpdate()
     {
@@ -78,15 +80,15 @@ public class Health : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Hurtful")
+        if (!invincible && collision.collider.tag == "Hurtful")
         {
             //adds a force away from the spike, so that the player doesn't rub against it
             float xValue = transform.position.x - collision.transform.position.x;
             float yValue = transform.position.y - collision.transform.position.y;
             Vector2 direction = new(xValue, yValue);
-            player.AddForce(direction * thrust);
+            playerController.ApplyForce(direction * thrust, 0.1f);
             spriteRenderer.color = Color.red;
-            if (!invincible && !alwaysInvincible)
+            if (!alwaysInvincible)
             {
                 //removes health and starts invincibility frames
                 health -= 4;
