@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 06378662c6ce23643946af8d8f8dd61d
+guid: 12d79aca0262e3948a71c06628345673
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5658473660130133382
-    second: deadly_spikes_0
+      213: 7499154508442906066
+    second: box_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: deadly_spikes_0
+      name: box_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,52 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a7af90d9f201971b0800000000000000
-      internalID: -5658473660130133382
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: deadly_spikes_1
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f0b445efd21a0ff44b55e1d9f3a92f55
-      internalID: 2037554821
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: deadly_spikes_2
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 0
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 363eb79154251964a82e7e227d0a8ba1
-      internalID: -1163681593
+      spriteID: 2dd228f0b49521860800000000000000
+      internalID: 7499154508442906066
       vertices: []
       indices: 
       edges: []
@@ -205,9 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      deadly_spikes_0: -5658473660130133382
-      deadly_spikes_1: 2037554821
-      deadly_spikes_2: -1163681593
+      box_0: 7499154508442906066
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

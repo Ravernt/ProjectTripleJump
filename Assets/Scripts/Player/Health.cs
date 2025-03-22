@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine.UI;
+using System;
 
 public class Health : MonoBehaviour
 {
@@ -41,8 +41,10 @@ public class Health : MonoBehaviour
     [SerializeField] Transform respawnPoint;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] private float fadeSpeed = 2.0f;
+    [SerializeField] ParticleSystem hitParticle;
+    [SerializeField] ParticleSystem deathParticle;
 
-    private float thrust = 4f;
+    private float thrust = 15f;
     Vector2 initialPosition;
     private int updateCount = 0;
     private bool invincible = false;
@@ -51,6 +53,9 @@ public class Health : MonoBehaviour
     private CanvasGroup blackoutCanvasGroup;
     private bool isRespawning = false;
 
+    bool dead = false;
+    public event Action OnRespawn;
+    public event Action OnDeath;
 
     void FixedUpdate()
     {
@@ -66,8 +71,11 @@ public class Health : MonoBehaviour
             //removes invincibility once the invincibility frame count runs out
             invincible = false;
         }
-        if (health <= 0 && !alwaysInvincible)
+        if (!dead && health <= 0 && !alwaysInvincible)
         {
+            dead = true;
+            deathParticle.Play(true);
+            OnDeath?.Invoke();
             spriteRenderer.color = Color.red;
 
             // Start the blackout and respawn process if not already in progress
@@ -86,8 +94,9 @@ public class Health : MonoBehaviour
             float xValue = transform.position.x - collision.transform.position.x;
             float yValue = transform.position.y - collision.transform.position.y;
             Vector2 direction = new(xValue, yValue);
-            playerController.ApplyForce(direction * thrust, 0.1f);
+            playerController.ApplyForce(direction.normalized * thrust, 0.1f);
             spriteRenderer.color = Color.red;
+            hitParticle.Play(true);
             if (!alwaysInvincible)
             {
                 //removes health and starts invincibility frames
@@ -102,18 +111,19 @@ public class Health : MonoBehaviour
     {
         if (collision.collider.tag == "InstaKill")
         {
-            if (!invincible && !alwaysInvincible)
+            if (!dead && !invincible && !alwaysInvincible)
             {
                 health = 0;
                 invincible = true;
                 invincibilityStart = updateCount;
+                hitParticle.Play(true);
             }
         }
     }
 
     private void InitializeBlackoutPanel()
     {
-        Canvas canvas = FindObjectOfType<Canvas>();
+        Canvas canvas = FindAnyObjectByType<Canvas>();
         if (canvas == null)
         {
             GameObject canvasObject = new GameObject("BlackoutCanvas");
@@ -153,6 +163,8 @@ public class Health : MonoBehaviour
         // respawn the player
         transform.position = initialPosition;
         health = 12;
+        dead = false;
+        OnRespawn?.Invoke();
 
         yield return new WaitForSeconds(0.5f);
 

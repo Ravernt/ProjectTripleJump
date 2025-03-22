@@ -7,6 +7,7 @@ public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] Transform holder;
     [SerializeField] PlayerController controller;
+    [SerializeField] Health health;
     [Space]
     [SerializeField] Sprite[] idleSprites;
     [SerializeField] float idleAnimationSpeed;
@@ -17,6 +18,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] Sprite fallSprite;
     [SerializeField] Sprite doubleJumpSprite;
     [SerializeField] Sprite dashSprite;
+    [SerializeField] Sprite deadSprite;
     [Space]
     [SerializeField] ParticleSystem moveParticle;
     [SerializeField] ParticleSystem jumpParticle;
@@ -25,6 +27,7 @@ public class PlayerAnimator : MonoBehaviour
 
     SpriteRenderer sr;
     Coroutine animationCoroutine;
+    PlayerState currentState;
 
     List<Sequence> activeSequences = new();
 
@@ -32,12 +35,13 @@ public class PlayerAnimator : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         controller.OnStateChange += OnStateChange;
+        health.OnDeath += () => OnStateChange(PlayerState.Dead);
         OnStateChange(PlayerState.Idle);
     }
 
     void Update()
     {
-        if(Mathf.Abs(controller.FrameInput.Move.x) > 0.1f)
+        if(currentState != PlayerState.Dead && Mathf.Abs(controller.FrameInput.Move.x) > 0.1f)
         {
             holder.localScale = new(controller.FrameInput.Move.x < 0? -1 : 1, 1);
         }
@@ -45,6 +49,8 @@ public class PlayerAnimator : MonoBehaviour
 
     void OnStateChange(PlayerState state)
     {
+        currentState = state;
+
         if(animationCoroutine != null)
         {
             StopCoroutine(animationCoroutine);
@@ -94,6 +100,9 @@ public class PlayerAnimator : MonoBehaviour
                 dashParticle.Play(true);
                 break;
 
+            case PlayerState.Dead:
+                sr.sprite = deadSprite;
+                break;
         }
     }
 

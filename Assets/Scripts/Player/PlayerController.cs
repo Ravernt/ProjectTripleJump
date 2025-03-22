@@ -9,7 +9,8 @@ public enum PlayerState
     Jumping,
     Falling,
     DoubleJumping,
-    Dashing
+    Dashing,
+    Dead
 }
 
 public struct FrameInput
@@ -23,6 +24,7 @@ public struct FrameInput
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] ScriptableStats stats;
+    [SerializeField] Health health;
 
     [SerializeField] private int maxAirJumps = 1;
     private int airJumpsLeft = 0;
@@ -44,6 +46,7 @@ public class PlayerController : MonoBehaviour
     public FrameInput FrameInput { get; private set; }
     public Action<PlayerState> OnStateChange;
 
+    bool canMove = true;
     bool isKnockedBack = false;
 
     void Awake()
@@ -52,7 +55,16 @@ public class PlayerController : MonoBehaviour
         col = GetComponent<CapsuleCollider2D>();
         Physics2D.queriesStartInColliders = false;
 
+        health.OnRespawn += () => canMove = true;
+        health.OnDeath += StopMovement;
         StartGround();
+    }
+
+    void StopMovement()
+    {
+        canMove = false;
+        rb.linearVelocity = Vector2.zero;
+        frameVelocity = Vector2.zero;
     }
 
     void StartGround()
@@ -92,10 +104,18 @@ public class PlayerController : MonoBehaviour
 
         CheckCollisions();
 
-        HandleJump();
-        HandleDirection();
+        if(canMove)
+        {
+            HandleJump();
+            HandleDirection();
+            HandleDash();
+        }
+        else
+        {
+
+        }
+
         HandleGravity();
-        HandleDash();
 
         ApplyMovement();
     }
