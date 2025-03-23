@@ -39510,8 +39510,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.7, y: 1.1348109}
+  m_Offset: {x: 0, y: -0.046012938}
+  m_Size: {x: 0.7, y: 0.98540914}
   m_Direction: 0
 --- !u!114 &5896201913463806551
 MonoBehaviour:
@@ -44494,7 +44494,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalScale: {x: 1.125, y: 1.125, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3728875748126224951}

@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!198 &166968209 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5496155604599194752, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-  m_PrefabInstance: {fileID: 5797114132290689727}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,38 +354,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!198 &770955881 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3207828825286067522, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-  m_PrefabInstance: {fileID: 5797114132290689727}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1025905729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 122461718103161041, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
   m_PrefabInstance: {fileID: 5797114132290689727}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1025905730 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-  m_PrefabInstance: {fileID: 5797114132290689727}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5beddcddab2596846866dde766068fac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1403395248 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6808983669942234509, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-  m_PrefabInstance: {fileID: 5797114132290689727}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc2edc1d2050ce945b6f60f54f7b95f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1511758167 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2001912153870752126, guid: 292ec4cef8c8aad468a3d67465e67fbd, type: 3}
@@ -594,45 +562,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: health
-      value: 
-      objectReference: {fileID: 1403395248}
-    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: maxAirJumps
-      value: 2
+    - target: {fileID: 4121399673802636793, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.125
       objectReference: {fileID: 0}
-    - target: {fileID: 5137405362499934305, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: health
-      value: 
-      objectReference: {fileID: 1403395248}
-    - target: {fileID: 5137405362499934305, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: deadSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 0676732c89a317d4d8a97ffa6bb37275, type: 3}
+    - target: {fileID: 4121399673802636793, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.125
+      objectReference: {fileID: 0}
     - target: {fileID: 5938865398358182671, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: m_Material
-      value: 
+      propertyPath: m_Size.y
+      value: 0.98540914
       objectReference: {fileID: 0}
-    - target: {fileID: 6808983669942234509, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: fadeSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6808983669942234509, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: hitParticle
-      value: 
-      objectReference: {fileID: 166968209}
-    - target: {fileID: 6808983669942234509, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: deathParticle
-      value: 
-      objectReference: {fileID: 770955881}
-    - target: {fileID: 6808983669942234509, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: playerController
-      value: 
-      objectReference: {fileID: 1025905730}
-    - target: {fileID: 6808983669942234509, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: invincibilityFrameCount
-      value: 20
+    - target: {fileID: 5938865398358182671, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.046012938
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -645,6 +589,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 3804693556309297611}
-  - {fileID: 5797114132290689727}
   - {fileID: 619394802}
   - {fileID: 4916906821620378685}
+  - {fileID: 5797114132290689727}
