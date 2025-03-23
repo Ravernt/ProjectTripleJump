@@ -45,7 +45,7 @@ public class Health : MonoBehaviour
     [SerializeField] ParticleSystem deathParticle;
 
     private float thrust = 15f;
-    Vector2 initialPosition;
+    public Vector2 initialPosition;
     private int updateCount = 0;
     private bool invincible = false;
     private int invincibilityStart;
