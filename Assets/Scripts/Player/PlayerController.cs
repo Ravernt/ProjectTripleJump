@@ -109,6 +109,9 @@ public class PlayerController : MonoBehaviour
     bool canMove = true;
     bool isKnockedBack = false;
 
+    public delegate void VelocityCalculation(ref Vector2 velocity);
+    public VelocityCalculation CalculateVelocity;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -434,7 +437,11 @@ public class PlayerController : MonoBehaviour
     {
         //applies calculated velocity to rigidbody'
         if (!isKnockedBack)
-            rb.linearVelocity = frameVelocity;
+        {
+            Vector2 otherForces = Vector2.zero;
+            CalculateVelocity?.Invoke(ref otherForces);
+            rb.linearVelocity = frameVelocity + otherForces;
+        }
     }
 
     public void ApplyForce(Vector2 force, float duration)
