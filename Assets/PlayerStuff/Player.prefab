@@ -14846,6 +14846,8 @@ MonoBehaviour:
   doubleJumpSprite: {fileID: 21300000, guid: 4545b0d98b8404e4682737c3387de4da, type: 3}
   dashSprite: {fileID: 21300000, guid: d6282ff0bd8f83547a305e18668fdc0a, type: 3}
   deadSprite: {fileID: 21300000, guid: 0676732c89a317d4d8a97ffa6bb37275, type: 3}
+  wallSlideSprite: {fileID: 21300000, guid: b29b0926a113db9468848cb1ba65a1b9, type: 3}
+  glideSprite: {fileID: 21300000, guid: 5972a9c52c5a1764a816a23f335a8066, type: 3}
   moveParticle: {fileID: 6422302439661837643}
   jumpParticle: {fileID: 4779711256223475416}
   dashParticle: {fileID: 6288059616187933406}
@@ -39384,9 +39386,10 @@ GameObject:
   - component: {fileID: 2656341398056932823}
   - component: {fileID: 5938865398358182671}
   - component: {fileID: 5896201913463806551}
+  - component: {fileID: 2009181268713121119}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39424,10 +39427,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 105f6a00a3948374fb10b5ce23dcf84f, type: 2}
   health: {fileID: 6808983669942234509}
+  abilities: {fileID: 2009181268713121119}
   maxAirJumps: 2
   dashSpeed: 13
   dashDuration: 0.3
   dashCooldown: 1.5
+  glideFallSpeed: 3
+  glideGravityMultiplier: 0.2
+  wallSlideSpeed: 3
+  wallCheckDistance: 0.15
 --- !u!114 &6808983669942234509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39449,6 +39457,7 @@ MonoBehaviour:
   fadeSpeed: 1
   hitParticle: {fileID: 5496155604599194752}
   deathParticle: {fileID: 3207828825286067522}
+  initialPosition: {x: 0, y: 0}
 --- !u!50 &2656341398056932823
 Rigidbody2D:
   serializedVersion: 5
@@ -39528,6 +39537,19 @@ MonoBehaviour:
   prefab: {fileID: -4419908938482611767, guid: 9996a17f78ef97c4392dc13ef2bc1a95, type: 3}
   firePoint1: {fileID: 2699360638824901530}
   firePoint2: {fileID: 168352742346074246}
+--- !u!114 &2009181268713121119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3554813497592685139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7d73a5093f2924480a6876fabb1299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlockAllAbilitiesAtStart: 1
 --- !u!1 &4677031449765969614
 GameObject:
   m_ObjectHideFlags: 0

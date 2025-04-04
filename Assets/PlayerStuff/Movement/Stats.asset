@@ -17,12 +17,15 @@ MonoBehaviour:
     m_Bits: 8
   CollisionLayer:
     serializedVersion: 2
-    m_Bits: 129
+    m_Bits: 385
+  WallJumpCollisionLayer:
+    serializedVersion: 2
+    m_Bits: 256
   MaxSpeed: 5
   Acceleration: 60
   GroundDeceleration: 40
   AirDeceleration: 10
-  GroundingForce: -1.5
+  GroundingForce: 0
   GrounderDistance: 0.1
   JumpPower: 13
   MaxFallSpeed: 11

@@ -1933,7 +1933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1875552337}
   direction: {x: 0, y: 4}
-  speed: 2
+  speed: 1
 --- !u!212 &1697150302
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2195,6 +2195,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5beddcddab2596846866dde766068fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1875552342 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2009181268713121119, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+  m_PrefabInstance: {fileID: 5797114132290689727}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7d73a5093f2924480a6876fabb1299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1999769200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2400,6 +2411,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 692274543070195592, guid: 055f04d742ee0f3449c445a870637f27, type: 3}
+      propertyPath: m_Name
+      value: Walls
+      objectReference: {fileID: 0}
+    - target: {fileID: 692274543070195592, guid: 055f04d742ee0f3449c445a870637f27, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1537477049639438582, guid: 055f04d742ee0f3449c445a870637f27, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[0].m_RefCount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1537477049639438582, guid: 055f04d742ee0f3449c445a870637f27, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[15].m_RefCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1537477049639438582, guid: 055f04d742ee0f3449c445a870637f27, type: 3}
+      propertyPath: m_Tiles.Array.data[86].second.m_TileSpriteIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6551548258378613392, guid: 055f04d742ee0f3449c445a870637f27, type: 3}
       propertyPath: player
       value: 
@@ -2477,26 +2508,34 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4121399673802636793, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 4121399673802636793, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.125
+    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: abilities
+      value: 
+      objectReference: {fileID: 1875552342}
+    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: glideFallSpeed
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: unlockAllAbilitiesAtStart
-      value: 0
+      propertyPath: wallSlideSpeed
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 5938865398358182671, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: m_Size.y
-      value: 0.98540914
+    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: wallCheckDistance
+      value: 0.15
       objectReference: {fileID: 0}
-    - target: {fileID: 5938865398358182671, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.046012938
+    - target: {fileID: 4517872887065300171, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: glideGravityMultiplier
+      value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 5137405362499934305, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: glideSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5972a9c52c5a1764a816a23f335a8066, type: 3}
+    - target: {fileID: 5137405362499934305, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
+      propertyPath: wallSlideSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b29b0926a113db9468848cb1ba65a1b9, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

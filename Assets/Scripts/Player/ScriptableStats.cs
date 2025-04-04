@@ -6,6 +6,7 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("Set this to the layer your player is on")]
     public LayerMask PlayerLayer;
     public LayerMask CollisionLayer;
+    public LayerMask WallJumpCollisionLayer;
 
     [Header("MOVEMENT")]
     [Tooltip("The top horizontal movement speed")]
