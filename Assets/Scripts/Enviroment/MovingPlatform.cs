@@ -2,31 +2,31 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    [SerializeField] PlayerController controller;
-    [SerializeField] Vector2 direction;
+    [SerializeField] Transform endPosition;
     [SerializeField] float speed;
 
     bool returning = false;
 
+    PlayerController controller;
     Rigidbody2D rb;
     Vector2 startPosition;
-    Vector2 endPosition;
 
     Vector3 lastPosition;
     Vector2 velocity;
 
     void Start()
     {
+        controller = FindAnyObjectByType<PlayerController>();
         rb = GetComponentInChildren<Rigidbody2D>();
         startPosition = transform.position;
-        endPosition = (Vector2)transform.position + direction;
+        endPosition.SetParent(null);
     }
 
     void Update()
     {
-        rb.linearVelocity = (returning ? -1 : 1) * speed * direction.normalized;
+        rb.linearVelocity = (returning ? -1 : 1) * speed *  (endPosition.position - transform.position).normalized;
 
-        if (!returning && Vector2.Distance(transform.position, endPosition) <= 0.025f)
+        if (!returning && Vector2.Distance(transform.position, endPosition.position) <= 0.025f)
         {
             returning = true;
         }
@@ -58,5 +58,14 @@ public class MovingPlatform : MonoBehaviour
     void AddVelocity(ref Vector2 velocity)
     {
         velocity += this.velocity;
+    }
+
+    void OnDrawGizmos()
+    {
+        if(endPosition != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, endPosition.position);
+        }
     }
 }
