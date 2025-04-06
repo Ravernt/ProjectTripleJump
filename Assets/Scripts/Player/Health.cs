@@ -79,7 +79,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (!invincible && collision.collider.tag == "Hurtful")
         {
@@ -98,10 +98,7 @@ public class Health : MonoBehaviour
                 invincibilityStart = updateCount;
             }
         }
-    }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
         if (collision.collider.tag == "InstaKill")
         {
             if (!dead && !invincible && !alwaysInvincible)
@@ -116,16 +113,13 @@ public class Health : MonoBehaviour
 
     private void InitializeBlackoutPanel()
     {
-        Canvas canvas = FindAnyObjectByType<Canvas>();
-        if (canvas == null)
-        {
-            GameObject canvasObject = new GameObject("BlackoutCanvas");
-            canvas = canvasObject.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasObject.AddComponent<CanvasScaler>();
-            canvasObject.AddComponent<GraphicRaycaster>();
-        }
+        GameObject canvasObject = new GameObject("BlackoutCanvas");
+        Canvas canvas = canvasObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasObject.AddComponent<CanvasScaler>();
+        canvasObject.AddComponent<GraphicRaycaster>();
 
+        canvas.transform.position = Camera.main.transform.position;
         blackoutPanel = new GameObject("BlackoutPanel");
         blackoutPanel.transform.SetParent(canvas.transform, false);
 
