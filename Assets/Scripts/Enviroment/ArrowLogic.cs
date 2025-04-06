@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class ArrowLogic : MonoBehaviour
@@ -13,16 +14,19 @@ public class ArrowLogic : MonoBehaviour
     Vector2 arrowDirection;
     Vector2 initialPosition;
     bool inFlight = false;
-    void FixedUpdate()
+
+    bool canActivate = true;
+
+    void Update()
     {
-        if(pressurePlate.isActivated)
+        if(canActivate && pressurePlate.isActivated)
         {
+            canActivate = false;
             inFlight = true;
         }
         if(inFlight)
         {
             transform.position = new Vector2(transform.position.x + arrowDirection.x * Time.deltaTime * arrowSpeed, transform.position.y);
-            hitParticle.transform.position = transform.position;
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,7 +35,13 @@ public class ArrowLogic : MonoBehaviour
         {
             hitParticle.Play(true);
             inFlight = false;
-            transform.position = new Vector3(initialPosition.x, initialPosition.y, 0.2f);
+            Invoke(nameof(ResetPosition), 0.1f);
         }
+    }
+
+    void ResetPosition()
+    {
+        canActivate = true;
+        transform.position = new Vector3(initialPosition.x, initialPosition.y, 0.2f);
     }
 }
