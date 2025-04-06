@@ -147,4 +147,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd208d2ddbef02499ef9ed3cb701723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityToUnlock: 1
+  abilityToUnlock: 3
