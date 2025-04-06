@@ -14,30 +14,42 @@ public class MovingPlatform : MonoBehaviour
     Vector3 lastPosition;
     Vector2 velocity;
 
+    Vector2 direction;
+
     void Start()
     {
         controller = FindAnyObjectByType<PlayerController>();
         rb = GetComponentInChildren<Rigidbody2D>();
         startPosition = transform.position;
         endPosition.SetParent(null);
+
+        direction = ((Vector2)transform.position - startPosition).normalized;
     }
 
     void Update()
     {
-        rb.linearVelocity = (returning ? -1 : 1) * speed *  (endPosition.position - transform.position).normalized;
+        rb.linearVelocity = (returning ? -1 : 1) * speed * ((Vector2)endPosition.position - startPosition).normalized;
+        Debug.Log(rb.linearVelocity);
 
-        if (!returning && Vector2.Distance(transform.position, endPosition.position) <= 0.025f)
-        {
-            returning = true;
-        }
-
-        if (returning && Vector2.Distance(transform.position, startPosition) <= 0.025f)
+        if (returning && !AreSimilarDirections(((Vector2)transform.position - startPosition).normalized, direction))
         {
             returning = false;
+            direction = (transform.position - endPosition.position).normalized;
+        }
+        else if (!returning && !AreSimilarDirections((Vector2)(transform.position - endPosition.position).normalized, direction))
+        {
+            returning = true;
+            direction = ((Vector2)transform.position - startPosition).normalized;
         }
 
         velocity = (transform.position - lastPosition) / Time.deltaTime;
         lastPosition = transform.position;
+    }
+
+    bool AreSimilarDirections(Vector2 direction1, Vector2 direction2)
+    {
+        Debug.Log(direction1.x + " " + direction2.x + " " + returning);
+        return Mathf.Abs(direction1.x - direction2.x) < 0.001f && Mathf.Abs(direction1.y - direction2.y) < 0.001f;
     }
 
     void OnTriggerEnter2D(Collider2D col)
