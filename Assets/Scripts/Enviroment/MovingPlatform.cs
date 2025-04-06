@@ -29,7 +29,6 @@ public class MovingPlatform : MonoBehaviour
     void Update()
     {
         rb.linearVelocity = (returning ? -1 : 1) * speed * ((Vector2)endPosition.position - startPosition).normalized;
-        Debug.Log(rb.linearVelocity);
 
         if (returning && !AreSimilarDirections(((Vector2)transform.position - startPosition).normalized, direction))
         {
@@ -48,7 +47,6 @@ public class MovingPlatform : MonoBehaviour
 
     bool AreSimilarDirections(Vector2 direction1, Vector2 direction2)
     {
-        Debug.Log(direction1.x + " " + direction2.x + " " + returning);
         return Mathf.Abs(direction1.x - direction2.x) < 0.001f && Mathf.Abs(direction1.y - direction2.y) < 0.001f;
     }
 
