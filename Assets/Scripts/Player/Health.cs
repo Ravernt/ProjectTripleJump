@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
 using System;
@@ -168,5 +169,11 @@ public class Health : MonoBehaviour
         }
 
         isRespawning = false;
+        //RestartScene(); //need to make checkpoints dontDestroyOnLoad before implementing full restarts
+    }
+    public void RestartScene()
+    {
+        Scene thisScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(thisScene.name);
     }
 }
