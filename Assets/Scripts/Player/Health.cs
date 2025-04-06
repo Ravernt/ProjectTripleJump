@@ -5,14 +5,6 @@ using System;
 
 public class Health : MonoBehaviour
 {
-    /// <summary>
-    /// 
-    /// 
-    /// 
-    /// The damage bounce is too fast
-    /// 
-    /// </summary>
-    /// 
 
     Rigidbody2D player;
     GameObject respawn;
