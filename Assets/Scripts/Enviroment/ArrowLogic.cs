@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ArrowLogic : MonoBehaviour
 {
+    AudioManager audioManager;
     [SerializeField] PressurePlate pressurePlate;
     [SerializeField] float arrowSpeed = 10f;
     [SerializeField] ParticleSystem hitParticle;
@@ -10,6 +11,10 @@ public class ArrowLogic : MonoBehaviour
     {
         arrowDirection = new Vector2((pressurePlate.transform.position.x - transform.position.x), 0).normalized;
         initialPosition = transform.position;
+    }
+        void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
     Vector2 arrowDirection;
     Vector2 initialPosition;
@@ -21,6 +26,7 @@ public class ArrowLogic : MonoBehaviour
     {
         if(canActivate && pressurePlate.isActivated)
         {
+            audioManager.PlaySFX(audioManager.bullet);
             canActivate = false;
             inFlight = true;
         }
