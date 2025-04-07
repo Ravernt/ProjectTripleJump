@@ -12,7 +12,7 @@ public class FalingSpike : MonoBehaviour
     Rigidbody2D rb;
     bool hasPlayed = false;
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
         if(hit.collider.tag == "Player")
@@ -31,7 +31,13 @@ public class FalingSpike : MonoBehaviour
         hitParticle.transform.position = transform.position;
         hitParticle.Play(true);
     }
+
     void OnCollisionEnter2D(Collision2D collision)
+    {
+        Invoke(nameof(DestroyThis), 0.05f);
+    }
+
+    void DestroyThis()
     {
         Destroy(gameObject);
     }
