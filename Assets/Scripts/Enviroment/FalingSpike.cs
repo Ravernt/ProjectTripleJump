@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class FalingSpike : MonoBehaviour
 {
+    AudioManager audioManager;
+    void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     [SerializeField] ParticleSystem hitParticle;
     void Start()
     {
@@ -28,6 +33,7 @@ public class FalingSpike : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        audioManager.PlaySFX(audioManager.spikeFalling);
         hitParticle.transform.position = transform.position;
         hitParticle.Play(true);
     }
