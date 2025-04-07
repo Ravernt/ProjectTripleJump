@@ -6,11 +6,13 @@ using System;
 
 public class Health : MonoBehaviour
 {
+    AudioManager audioManager;
 
     Rigidbody2D player;
     GameObject respawn;
     void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         //gets the player information
         player = GetComponent<Rigidbody2D>();
 
@@ -67,6 +69,7 @@ public class Health : MonoBehaviour
         if (!dead && health <= 0 && !alwaysInvincible)
         {
             dead = true;
+            audioManager.PlaySFX(audioManager.dead);
             deathParticle.Play(true);
             OnDeath?.Invoke();
             spriteRenderer.color = Color.red;
@@ -89,6 +92,7 @@ public class Health : MonoBehaviour
             Vector2 direction = new(xValue, yValue);
             playerController.ApplyForce(direction.normalized * thrust, 0.1f);
             spriteRenderer.color = Color.red;
+            audioManager.PlaySFX(audioManager.hurt);
             hitParticle.Play(true);
             if (!alwaysInvincible)
             {
