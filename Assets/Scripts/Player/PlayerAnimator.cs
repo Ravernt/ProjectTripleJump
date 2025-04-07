@@ -26,13 +26,18 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] ParticleSystem jumpParticle;
     [SerializeField] ParticleSystem dashParticle;
     [SerializeField] ParticleSystem doubleJumpParticle;
-
+    AudioManager audioManager;
+    
     SpriteRenderer sr;
     Coroutine animationCoroutine;
     PlayerState currentState;
 
     List<Sequence> activeSequences = new();
-
+    
+    void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -146,6 +151,7 @@ public class PlayerAnimator : MonoBehaviour
 
     void PlayJumpAnimation()
     {
+        audioManager.PlaySFX(audioManager.jump);
         sr.transform.DOKill();
         sr.transform.DOScale(new Vector3(0.8f, 1.15f, 1), 0.075f).OnComplete(
             () => sr.transform.DOScale(Vector3.one, 0.125f));
