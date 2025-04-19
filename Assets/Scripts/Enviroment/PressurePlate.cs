@@ -5,10 +5,12 @@ public class PressurePlate : MonoBehaviour
     public bool isActivated = false;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        isActivated = true;
+        if(other.CompareTag("Player"))
+            isActivated = true;
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        isActivated = false;
+        if (collision.CompareTag("Player"))
+            isActivated = false;
     }
 }

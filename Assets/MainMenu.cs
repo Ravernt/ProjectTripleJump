@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadSceneAsync("AiridasScene");
+        SceneManager.LoadSceneAsync("Main");
     }
 
     public void QuitGame()
