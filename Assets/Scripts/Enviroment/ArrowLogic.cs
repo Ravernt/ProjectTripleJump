@@ -7,26 +7,33 @@ public class ArrowLogic : MonoBehaviour
     [SerializeField] PressurePlate pressurePlate;
     [SerializeField] float arrowSpeed = 10f;
     [SerializeField] ParticleSystem hitParticle;
-    private void Start()
-    {
-        arrowDirection = new Vector2((pressurePlate.transform.position.x - transform.position.x), 0).normalized;
-        initialPosition = transform.position;
-    }
-        void Awake()
-    {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-    }
     Vector2 arrowDirection;
     Vector2 initialPosition;
     bool inFlight = false;
 
     bool canActivate = true;
 
+    private void Start()
+    {
+        arrowDirection = new Vector2((pressurePlate.transform.position.x - transform.position.x), 0).normalized;
+        initialPosition = transform.position;
+    }
+
+    void Awake()
+    {
+        var manager = GameObject.FindGameObjectWithTag("Audio");
+        if (manager != null)
+        {
+            audioManager = manager.GetComponent<AudioManager>();
+        }
+    }
+
     void Update()
     {
         if(canActivate && pressurePlate.isActivated)
         {
-            audioManager.PlaySFX(audioManager.bullet);
+            if(audioManager != null)
+                audioManager.PlaySFX(audioManager.bullet);
             canActivate = false;
             inFlight = true;
         }

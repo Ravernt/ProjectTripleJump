@@ -12,7 +12,13 @@ public class Health : MonoBehaviour
     GameObject respawn;
     void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        var source = GameObject.FindGameObjectWithTag("Audio");
+
+        if(source != null)
+        {
+            audioManager = source.GetComponent<AudioManager>();
+        }
+
         //gets the player information
         player = GetComponent<Rigidbody2D>();
 
@@ -30,9 +36,9 @@ public class Health : MonoBehaviour
     }
 
     [SerializeField] PlayerController playerController;
-    [SerializeField] private int health = 12;
+    [SerializeField] private int maxHealth = 3;
     [SerializeField] private bool alwaysInvincible = false;
-    [SerializeField] private int invincibilityFrameCount = 5;
+    [SerializeField] private float invincibilityTime;
     [SerializeField] Transform respawnPoint;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] private float fadeSpeed = 2.0f;
@@ -41,81 +47,99 @@ public class Health : MonoBehaviour
 
     private float thrust = 15f;
     public Vector2 initialPosition;
-    private int updateCount = 0;
-    private bool invincible = false;
-    private int invincibilityStart;
     private GameObject blackoutPanel;
     private CanvasGroup blackoutCanvasGroup;
-    private bool isRespawning = false;
 
-    bool dead = false;
+    public int MaxHealth { get { return maxHealth; } set { maxHealth = value; } }
+    public int CurrentHealth { get; set; }
+    public bool Dead { get; set; } = false;
+    public bool Invincible { get; set; } = false;
+    public float InvincibilityTime { get { return invincibilityTime; } set { invincibilityTime = value; } }
     public event Action OnRespawn;
     public event Action OnDeath;
+    Coroutine invincibilityCoroutine;
+    Coroutine respawnCoroutine;
 
-    void FixedUpdate()
+    void Start()
     {
-        updateCount++;
-        if (updateCount >= 65536 && !invincible)
-            updateCount = 0;
-        if (!invincible)
-        {
-            spriteRenderer.color = Color.white;
-        }
-        if (invincible && (updateCount - invincibilityStart) >= invincibilityFrameCount)
-        {
-            //removes invincibility once the invincibility frame count runs out
-            invincible = false;
-        }
-        if (!dead && health <= 0 && !alwaysInvincible)
-        {
-            dead = true;
-            audioManager.PlaySFX(audioManager.dead);
-            deathParticle.Play(true);
-            OnDeath?.Invoke();
-            spriteRenderer.color = Color.red;
-
-            // Start the blackout and respawn process if not already in progress
-            if (!isRespawning)
-            {
-                StartCoroutine(BlackoutAndRespawn());
-            }
-        }
+        CurrentHealth = maxHealth;
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!invincible && collision.collider.tag == "Hurtful")
+        if (collision.collider.tag == "Hurtful")
         {
-            //adds a force away from the spike, so that the player doesn't rub against it
             float xValue = transform.position.x - collision.transform.position.x;
             float yValue = transform.position.y - collision.transform.position.y;
             Vector2 direction = new(xValue, yValue);
             playerController.ApplyForce(direction.normalized * thrust, 0.1f);
-            spriteRenderer.color = Color.red;
-            audioManager.PlaySFX(audioManager.hurt);
-            hitParticle.Play(true);
-            if (!alwaysInvincible)
-            {
-                //removes health and starts invincibility frames
-                health -= 4;
-                invincible = true;
-                invincibilityStart = updateCount;
-            }
+
+            TakeDamage(1);
         }
 
         if (collision.collider.tag == "InstaKill")
         {
-            if (!dead && !invincible && !alwaysInvincible)
-            {
-                health = 0;
-                invincible = true;
-                invincibilityStart = updateCount;
-                hitParticle.Play(true);
-            }
+            Death();
         }
     }
 
-    private void InitializeBlackoutPanel()
+    public void TakeDamage(int amount)
+    {
+        if (Dead || alwaysInvincible || Invincible)
+            return;
+
+        CurrentHealth -= amount;
+
+        if(CurrentHealth <= 0)
+        {
+            Death();
+        }
+        else
+        {
+            if (audioManager != null)
+                audioManager.PlaySFX(audioManager.hurt);
+            hitParticle.Play(true);
+
+            if (invincibilityCoroutine != null)
+            {
+                StopCoroutine(invincibilityCoroutine);
+            }
+
+            invincibilityCoroutine = StartCoroutine(Invincibility());
+        }
+    }
+
+    public void Death()
+    {
+        if (Dead || alwaysInvincible)
+            return;
+
+        Dead = true;
+        if (audioManager != null)
+            audioManager.PlaySFX(audioManager.dead);
+        deathParticle.Play(true);
+        OnDeath?.Invoke();
+        spriteRenderer.color = Color.red;
+
+        if(respawnCoroutine != null)
+        {
+            StopCoroutine(respawnCoroutine);
+        }
+
+        respawnCoroutine = StartCoroutine(BlackoutAndRespawn());
+    }
+
+    public IEnumerator Invincibility()
+    {
+        Invincible = true;
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(invincibilityTime);
+        spriteRenderer.color = Color.white;
+        Invincible = false;
+        invincibilityCoroutine = null;
+    }
+
+    void InitializeBlackoutPanel()
     {
         GameObject canvasObject = new GameObject("BlackoutCanvas");
         Canvas canvas = canvasObject.AddComponent<Canvas>();
@@ -140,10 +164,8 @@ public class Health : MonoBehaviour
         blackoutCanvasGroup.blocksRaycasts = false;
     }
 
-    private IEnumerator BlackoutAndRespawn()
+    public IEnumerator BlackoutAndRespawn()
     {
-        isRespawning = true;
-
         // Fade to black
         while (blackoutCanvasGroup.alpha < 1)
         {
@@ -153,8 +175,9 @@ public class Health : MonoBehaviour
 
         // respawn the player
         transform.position = initialPosition;
-        health = 12;
-        dead = false;
+        CurrentHealth = maxHealth;
+        spriteRenderer.color = Color.white;
+        Dead = false;
         OnRespawn?.Invoke();
 
         yield return new WaitForSeconds(0.5f);
@@ -166,9 +189,11 @@ public class Health : MonoBehaviour
             yield return null;
         }
 
-        isRespawning = false;
+        respawnCoroutine = null;
+
         //RestartScene(); //need to make checkpoints dontDestroyOnLoad before implementing full restarts
     }
+
     public void RestartScene()
     {
         Scene thisScene = SceneManager.GetActiveScene();

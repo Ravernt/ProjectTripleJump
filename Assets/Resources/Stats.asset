@@ -20,7 +20,7 @@ MonoBehaviour:
     m_Bits: 385
   WallJumpCollisionLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 257
   MaxSpeed: 5
   Acceleration: 60
   GroundDeceleration: 40

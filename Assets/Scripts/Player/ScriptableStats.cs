@@ -45,4 +45,15 @@ public class ScriptableStats : ScriptableObject
 
     [Tooltip("The amount of time we buffer a jump. This allows jump input before actually hitting the ground")]
     public float JumpBuffer = .2f;
+
+    [Space]
+    [Space]
+    [Header("ABILITIES")]
+    public float dashSpeed = 13;
+    public float dashDuration = 0.3f;
+    public float dashCooldown = 1.5f;
+    public float glideFallSpeed = 3f;
+    public float glideGravityMultiplier = 0.2f;
+    public float wallSlideSpeed = 3f;
+    public float wallCheckDistance = 0.15f;
 }

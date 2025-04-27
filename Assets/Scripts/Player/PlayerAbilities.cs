@@ -7,7 +7,8 @@ public enum AbilityType
     Dash,
     DoubleJump,
     Glide,
-    WallJump
+    WallJump,
+    TripleJump
 }
 
 
@@ -20,7 +21,8 @@ public class PlayerAbilities : MonoBehaviour
         { AbilityType.Dash, false },
         { AbilityType.DoubleJump, false },
         { AbilityType.Glide, false },
-        { AbilityType.WallJump, false }
+        { AbilityType.WallJump, false },
+        { AbilityType.TripleJump, false }
     };
 
     public bool HasAbility(AbilityType type) => unlockedAbilities.ContainsKey(type) && unlockedAbilities[type];
@@ -43,6 +45,7 @@ public class PlayerAbilities : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) ToggleAbility(AbilityType.DoubleJump);
         if (Input.GetKeyDown(KeyCode.Alpha3)) ToggleAbility(AbilityType.Glide);
         if (Input.GetKeyDown(KeyCode.Alpha4)) ToggleAbility(AbilityType.WallJump);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) ToggleAbility(AbilityType.TripleJump);
     }
 
     public void UnlockAbility(AbilityType type)

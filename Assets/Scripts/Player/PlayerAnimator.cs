@@ -36,13 +36,20 @@ public class PlayerAnimator : MonoBehaviour
     
     void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        var source = GameObject.FindGameObjectWithTag("Audio");
+
+        if(source != null)
+        {
+            audioManager = source.GetComponent<AudioManager>();
+        }
+
     }
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         controller.OnStateChange += OnStateChange;
-        health.OnDeath += () => OnStateChange(PlayerState.Dead);
+        if(health != null)
+            health.OnDeath += () => OnStateChange(PlayerState.Dead);
         OnStateChange(PlayerState.Idle);
     }
 
@@ -151,7 +158,8 @@ public class PlayerAnimator : MonoBehaviour
 
     void PlayJumpAnimation()
     {
-        audioManager.PlaySFX(audioManager.jump);
+        if(audioManager != null)
+            audioManager.PlaySFX(audioManager.jump);
         sr.transform.DOKill();
         sr.transform.DOScale(new Vector3(0.8f, 1.15f, 1), 0.075f).OnComplete(
             () => sr.transform.DOScale(Vector3.one, 0.125f));

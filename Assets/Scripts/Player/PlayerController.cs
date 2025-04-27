@@ -1,23 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
-
-public enum PlayerState
-{
-    Idle,
-    Running,
-    Jumping,
-    Falling,
-    DoubleJumping,
-    Dashing,
-    Dead,
-    WallSlidingLeft,
-    WallSlidingRight,
-    Gliding
-}
+using UnityEngine.Playables;
 
 public struct FrameInput
 {
@@ -27,44 +12,51 @@ public struct FrameInput
     public Vector2 Move;
 }
 
+public enum PlayerState
+{
+    Idle,
+    Running,
+    Dash,
+    Jumping,
+    DoubleJumping,
+    Dashing,
+    Dead,
+    Gliding,
+    WallSlidingLeft,
+    WallSlidingRight,
+    Falling
+}
+
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private ScriptableStats stats;
+    [SerializeField] ScriptableStats stats;
     [SerializeField] private Health health;
-    [SerializeField] private PlayerAbilities abilities;
-
-    [SerializeField] private int maxAirJumps = 1;
-    private int airJumpsLeft = 0;
-
-    [SerializeField] private float dashSpeed = 20f;
-    [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private float dashCooldown = 0.1f;
-    private bool isDashing;
-    private bool canDash = true;
+    [SerializeField] bool disableKeyInput = false;
+    public PlayerAbilities Abilities { get; private set; }
     private float dashTime;
     private float dashDirection;
 
+    private int airJumpTimes = 0;
+
     //Glide mechanics
-    [SerializeField] private float glideFallSpeed = 5f;
-    [SerializeField] private float glideGravityMultiplier = 0.3f;
-    private bool isGliding = false;
+    public bool IsGliding { private set; get; } = false;
 
     //Wall slide mechanics
-    [SerializeField] private float wallSlideSpeed = 5f;
-    [SerializeField] private float wallCheckDistance = 0.1f;
     private bool isTouchingWallLeft = false;
     private bool isTouchingWallRight = false;
-    private bool isWallSliding = false;
-    private bool isTouchingWall => isTouchingWallLeft || isTouchingWallRight;
+    public bool IsWallSliding = false;
+    public bool IsTouchingWall => isTouchingWallLeft || isTouchingWallRight;
 
     private bool isNearFloor = false;
 
     //Player state
     Rigidbody2D rb;
     CapsuleCollider2D col;
-    Vector2 frameVelocity;
-    PlayerState currentState = PlayerState.Idle;
-    public FrameInput FrameInput { get; private set; }
+    public Vector2 frameVelocity;
+    public Vector2 FrameVelocity { get { return frameVelocity; } }
+    public PlayerState CurrentState { get; private set; } = PlayerState.Idle;
+    public FrameInput FrameInput { get; set; }
+    public ScriptableStats Stats { get { return stats; } set { stats = value; } }
     public Action<PlayerState> OnStateChange;
 
     bool isKnockedBack = false;
@@ -74,62 +66,49 @@ public class PlayerController : MonoBehaviour
 
     bool dead = false;
 
+    public bool IsDashing { get; set; } = false;
+    public bool CanDash { get; set; } = true;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
+        Abilities = GetComponent<PlayerAbilities>();
         Physics2D.queriesStartInColliders = false;
 
-        health.OnRespawn += () => dead = false;
-        health.OnDeath += StopMovement;
-        StartGround();
+        if (health != null)
+        {
+            health.OnRespawn += () => dead = false;
+            health.OnDeath += StopMovement;
+        }
+
+        GroundPlayer();
     }
 
-    void StopMovement()
-    {
-        rb.linearVelocity = Vector2.zero;
-        frameVelocity = Vector2.zero;
-        dead = true;
-    }
-
-    void StartGround()
+    void GroundPlayer()
     {
         //Grounds the player at the start
         RaycastHit2D groundHit = Physics2D.Raycast(col.transform.position, Vector2.down, 1000, stats.CollisionLayer);
         col.transform.position = groundHit.point + new Vector2(0, col.size.y * 0.5f);
     }
 
+    public void StopMovement()
+    {
+        rb.linearVelocity = Vector2.zero;
+        frameVelocity = Vector2.zero;
+        dead = true;
+    }
+
     void Update()
-    {
-        GatherInput();
-        UpdateState();
-    }
-
-    void GatherInput()
-    {
-        //Saving current frame player input
-        FrameInput = new FrameInput
-        {
-            JumpDown = Input.GetButtonDown("Jump"),
-            JumpHeld = Input.GetButton("Jump"),
-            DashDown = Input.GetKey(KeyCode.LeftShift),
-            Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
-        };
-
-        if (FrameInput.JumpDown)
-        {
-            jumpToConsume = true;
-            timeJumpWasPressed = Time.time;
-        }
-    }
-
-
-    void FixedUpdate()
     {
         if (Time.time < 0.05f)
             return;
 
+        GatherInput();
+        UpdateState();
+
         CheckCollisions();
+        HandleGravity();
 
         if (!dead)
         {
@@ -140,12 +119,34 @@ public class PlayerController : MonoBehaviour
             HandleWallSlide();
         }
 
-        HandleGravity();
         ApplyMovement();
     }
 
+    void GatherInput()
+    {
+        //Saving current frame player input
+
+        if (!disableKeyInput)
+        {
+            FrameInput = new FrameInput
+            {
+                JumpDown = Input.GetButtonDown("Jump"),
+                JumpHeld = Input.GetButton("Jump"),
+                DashDown = Input.GetKey(KeyCode.LeftShift),
+                Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
+            };
+        }
+
+        if (FrameInput.JumpDown)
+        {
+            jumpToConsume = true;
+            timeJumpWasPressed = Time.time;
+        }
+    }
+
+
     float frameLeftGrounded = float.MinValue;
-    bool grounded = true;
+    public bool Grounded { get; private set; } = true;
 
     void CheckCollisions()
     {
@@ -160,28 +161,28 @@ public class PlayerController : MonoBehaviour
         }
 
         // Landed on the Ground
-        if (!grounded && groundHit)
+        if (!Grounded && groundHit)
         {
-            grounded = true;
+            Grounded = true;
             coyoteUsable = true;
             bufferedJumpUsable = true;
             endedJumpEarly = false;
             //Reset air jumps
-            airJumpsLeft = maxAirJumps;
+            airJumpTimes = 0;
         }
 
         // Left the Ground
-        else if (grounded && !groundHit)
+        else if (Grounded && !groundHit)
         {
-            grounded = false;
+            Grounded = false;
             frameLeftGrounded = Time.time;
         }
 
         //Character is touching a wall
         Vector2 origin = col.bounds.center;
         Vector2 size = col.size;
-        isTouchingWallLeft = Physics2D.CapsuleCast(origin, size, col.direction, 0, Vector2.left, wallCheckDistance, stats.WallJumpCollisionLayer);
-        isTouchingWallRight = Physics2D.CapsuleCast(origin, size, col.direction, 0, Vector2.right, wallCheckDistance, stats.WallJumpCollisionLayer);
+        isTouchingWallLeft = Physics2D.CapsuleCast(origin, size, col.direction, 0, Vector2.left, stats.wallCheckDistance, stats.WallJumpCollisionLayer);
+        isTouchingWallRight = Physics2D.CapsuleCast(origin, size, col.direction, 0, Vector2.right, stats.wallCheckDistance, stats.WallJumpCollisionLayer);
         isNearFloor = Physics2D.CapsuleCast(origin, size, col.direction, 0, Vector2.down, stats.GrounderDistance, stats.CollisionLayer);
     }
 
@@ -192,33 +193,46 @@ public class PlayerController : MonoBehaviour
     float timeJumpWasPressed;
 
     bool HasBufferedJump => bufferedJumpUsable && Time.time < timeJumpWasPressed + stats.JumpBuffer;
-    bool CanUseCoyote => coyoteUsable && !grounded && Time.time < frameLeftGrounded + stats.CoyoteTime;
+    bool CanUseCoyote => coyoteUsable && !Grounded && Time.time < frameLeftGrounded + stats.CoyoteTime;
 
     void HandleJump()
     {
         //Did player let go jump button
-        if (!endedJumpEarly && !grounded && !FrameInput.JumpHeld && rb.linearVelocity.y > 0)
+        if (!endedJumpEarly && !Grounded && !FrameInput.JumpHeld && rb.linearVelocity.y > 0)
         {
             endedJumpEarly = true;
         }
 
         //if can't jump, return
-        if (!jumpToConsume && !HasBufferedJump || isWallSliding)
+        if (!jumpToConsume && !HasBufferedJump || IsWallSliding)
         {
             return;
         }
 
         //handle jumping from the ground or in the air (double, triple jump)
-        if (grounded || CanUseCoyote || isWallSliding)
+        if (Grounded || CanUseCoyote || IsWallSliding)
         {
             HandleGroundedJump();
         }
-        else if (abilities.HasAbility(AbilityType.DoubleJump) && !isWallSliding && airJumpsLeft > 0)
+        else if (!IsWallSliding && HasEnoughAirJumps())
         {
             HandleAirJump();
         }
 
         jumpToConsume = false;
+    }
+
+    bool HasEnoughAirJumps()
+    {
+        if (Abilities.HasAbility(AbilityType.DoubleJump))
+        {
+            if (Abilities.HasAbility(AbilityType.TripleJump))
+                return airJumpTimes < 2;
+
+            return airJumpTimes < 1;
+        }
+
+        return false;
     }
 
     void HandleGroundedJump()
@@ -227,7 +241,7 @@ public class PlayerController : MonoBehaviour
     }
     void HandleAirJump()
     {
-        airJumpsLeft--;
+        airJumpTimes++;
         ExecuteJump();
         ChangeState(PlayerState.DoubleJumping);
     }
@@ -247,34 +261,20 @@ public class PlayerController : MonoBehaviour
         //handles player acceleration and deceleration
         if (FrameInput.Move.x == 0)
         {
-            var deceleration = grounded ? stats.GroundDeceleration : stats.AirDeceleration;
-            frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
+            var deceleration = Grounded ? stats.GroundDeceleration : stats.AirDeceleration;
+            frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, 0, deceleration * Time.deltaTime);
         }
         else
         {
-            frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, FrameInput.Move.x * stats.MaxSpeed, stats.Acceleration * Time.fixedDeltaTime);
+            frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, FrameInput.Move.x * stats.MaxSpeed, stats.Acceleration * Time.deltaTime);
         }
-
-        /*
-        if (grounded && (currentState == PlayerState.Idle || currentState == PlayerState.Running || currentState == PlayerState.Falling))
-        {
-            if (Mathf.Abs(FrameInput.Move.x) > 0.1f)
-            {
-                ChangeState(PlayerState.Running);
-            }
-            else
-            {
-                ChangeState(PlayerState.Idle);
-            }
-        }
-        */
     }
 
     void ChangeState(PlayerState state)
     {
-        if (currentState != state)
+        if (CurrentState != state)
         {
-            currentState = state;
+            CurrentState = state;
             OnStateChange?.Invoke(state);
         }
     }
@@ -283,24 +283,24 @@ public class PlayerController : MonoBehaviour
     {
         //gravity stuff
 
-        if (currentState == PlayerState.Dashing)
+        if (IsDashing)
         {
             frameVelocity.y = 0;
             return;
         }
 
-        if (grounded && frameVelocity.y <= 0f)
+        if (Grounded && frameVelocity.y <= 0f)
         {
             frameVelocity.y = stats.GroundingForce;
         }
 
         // Check if gliding
         float inAirGravity = stats.FallAcceleration;
-        if (isGliding)
+        if (IsGliding)
         {
-            frameVelocity.y = Mathf.Max(frameVelocity.y - (inAirGravity * glideGravityMultiplier * Time.fixedDeltaTime), -glideFallSpeed);
+            frameVelocity.y =
+                Mathf.Max(frameVelocity.y - (inAirGravity * stats.glideGravityMultiplier * Time.deltaTime), -stats.glideFallSpeed);
         }
-
         else
         {
             if (endedJumpEarly && frameVelocity.y > 0)
@@ -308,27 +308,27 @@ public class PlayerController : MonoBehaviour
                 inAirGravity *= stats.JumpEndEarlyGravityModifier;
             }
 
-            frameVelocity.y = Mathf.MoveTowards(frameVelocity.y, -stats.MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
+            frameVelocity.y = Mathf.MoveTowards(frameVelocity.y, -stats.MaxFallSpeed, inAirGravity * Time.deltaTime);
         }
     }
 
     //Dash mechanics
     void HandleDash()
     {
-        if (isDashing)
+        if (IsDashing)
         {
-            frameVelocity.x = dashSpeed * dashDirection;
+            frameVelocity.x = stats.dashSpeed * dashDirection;
             if (Time.time >= dashTime)
             {
-                isDashing = false;
+                IsDashing = false;
                 frameVelocity.x *= 0.5f;
             }
             return;
         }
 
-        bool canPerformDash = (canDash && FrameInput.Move.x != 0);
+        bool canPerformDash = (CanDash && FrameInput.Move.x != 0);
 
-        if (abilities.HasAbility(AbilityType.Dash) && FrameInput.DashDown && canPerformDash)
+        if (Abilities.HasAbility(AbilityType.Dash) && FrameInput.DashDown && canPerformDash)
         {
             StartDash();
         }
@@ -336,18 +336,19 @@ public class PlayerController : MonoBehaviour
 
     void StartDash()
     {
-        isDashing = true;
-        dashTime = Time.time + dashDuration;
+        IsDashing = true;
+        dashTime = Time.time + stats.dashDuration;
         dashDirection = Mathf.Sign(FrameInput.Move.x);
+        frameVelocity.y = 0;
 
-        canDash = false;
+        CanDash = false;
         StartCoroutine(DashCooldownRoutine());
     }
 
     IEnumerator DashCooldownRoutine()
     {
-        yield return new WaitForSeconds(dashCooldown);
-        canDash = true;
+        yield return new WaitForSeconds(stats.dashCooldown);
+        CanDash = true;
     }
 
     void ApplyMovement()
@@ -364,38 +365,32 @@ public class PlayerController : MonoBehaviour
     //Glide mechanics
     void HandleGlide()
     {
-        if (abilities.HasAbility(AbilityType.Glide) && 
-            !grounded && 
-            rb.linearVelocity.y < 0 && 
-            FrameInput.JumpHeld && 
-            currentState != PlayerState.Dashing)
+        if (Abilities.HasAbility(AbilityType.Glide) &&
+            !Grounded &&
+            rb.linearVelocity.y < 0 &&
+        FrameInput.JumpHeld &&
+            CurrentState != PlayerState.Dashing)
 
         {
-            isGliding = true;
+            IsGliding = true;
         }
         else
         {
-            isGliding = false;
+            IsGliding = false;
         }
     }
 
     //Wall slide mechanics
     void HandleWallSlide()
     {
-        bool pushingIntoWall = (isTouchingWallLeft && FrameInput.Move.x < 0) || 
+        bool pushingIntoWall = (isTouchingWallLeft && FrameInput.Move.x < 0) ||
             (isTouchingWallRight && FrameInput.Move.x > 0);
-        bool isFalling = rb.linearVelocity.y < 0 || true;
 
-        if (abilities.HasAbility(AbilityType.WallJump) &&
-            !isNearFloor && 
-            isTouchingWall 
-            && pushingIntoWall 
-            && isFalling 
-            && currentState != PlayerState.Dashing)
+        if (Abilities.HasAbility(AbilityType.WallJump) && !isNearFloor && pushingIntoWall && CurrentState != PlayerState.Dashing)
         {
-            frameVelocity.y = Mathf.Max(frameVelocity.y, -wallSlideSpeed);
-            isGliding = false;
-            isWallSliding = true;
+            frameVelocity.y = -stats.wallSlideSpeed;
+            IsGliding = false;
+            IsWallSliding = true;
             bufferedJumpUsable = true;
             endedJumpEarly = false;
             frameLeftGrounded = Time.time + 0.45f;
@@ -403,22 +398,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            isWallSliding = false;
+            IsWallSliding = false;
         }
-    }
-
-    //Wall jump mechanics
-    void HandleWallJump()
-    {
-        endedJumpEarly = false;
-        timeJumpWasPressed = 0;
-        bufferedJumpUsable = false;
-        coyoteUsable = false;
-
-        frameVelocity.y = stats.JumpPower;
-
-        isGliding = false;
-        ChangeState(PlayerState.Jumping);
     }
 
     void UpdateState()
@@ -426,35 +407,34 @@ public class PlayerController : MonoBehaviour
         ChangeState(GetCurrentState());
     }
 
-    PlayerState GetCurrentState()
+    public PlayerState GetCurrentState()
     {
         if (dead)
         {
             return PlayerState.Dead;
         }
 
-        if (isDashing)
+        if (IsDashing)
         {
             return PlayerState.Dashing;
         }
 
-        if(isWallSliding)
+        if (IsWallSliding)
         {
             return isTouchingWallLeft ? PlayerState.WallSlidingLeft : PlayerState.WallSlidingRight;
         }
 
 
-        if (frameVelocity.y < -1.5f && !grounded)
+        if (frameVelocity.y < -1.5f && !Grounded)
         {
-            return isGliding? PlayerState.Gliding : PlayerState.Falling;
+            return IsGliding ? PlayerState.Gliding : PlayerState.Falling;
+        }
+        if (frameVelocity.y > 0 && (CurrentState == PlayerState.Jumping || CurrentState == PlayerState.DoubleJumping))
+        {
+            return CurrentState;
         }
 
-        if (frameVelocity.y > 0 && (currentState == PlayerState.Jumping || currentState == PlayerState.DoubleJumping))
-        {
-            return currentState;
-        }
-
-        if(frameVelocity.x != 0)
+        if (frameVelocity.x != 0)
         {
             return PlayerState.Running;
         }
@@ -473,29 +453,4 @@ public class PlayerController : MonoBehaviour
     {
         isKnockedBack = false;
     }
-
-    /*
-    //Wall cling mechanics
-    void HandleWallCling()
-    {
-        if(!wallClingEnabled)
-        {
-            return;
-        }
-
-        bool isClinging =
-            (HasAbility(AbilityType.WallCling) &&
-            !grounded &&
-            isTouchingWall &&
-            FrameInput.ClingHeld &&
-            (currentState != PlayerState.Dashing));
-
-        if (isClinging)
-        {
-            frameVelocity.y = 0f;
-            isGliding = false;
-            ChangeState(PlayerState.WallSliding);
-        }
-    }
-    */
 }

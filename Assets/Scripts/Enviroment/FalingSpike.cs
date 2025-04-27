@@ -3,19 +3,26 @@ using UnityEngine;
 
 public class FalingSpike : MonoBehaviour
 {
+    [SerializeField] ParticleSystem hitParticle;
     AudioManager audioManager;
+    Rigidbody2D rb;
+    public bool hasPlayed = false;
+
     void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        var source = GameObject.FindGameObjectWithTag("Audio");
+
+        if (source != null)
+        {
+            audioManager = source.GetComponent<AudioManager>();
+        }
     }
-    [SerializeField] ParticleSystem hitParticle;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.simulated = false;
     }
-    Rigidbody2D rb;
-    bool hasPlayed = false;
     // Update is called once per frame
     void Update()
     {
@@ -29,11 +36,15 @@ public class FalingSpike : MonoBehaviour
             
             rb.simulated = true;
         }
-
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        audioManager.PlaySFX(audioManager.spikeFalling);
+        if(audioManager != null)
+        {
+            audioManager.PlaySFX(audioManager.spikeFalling);
+        }
+
         hitParticle.transform.position = transform.position;
         hitParticle.Play(true);
     }
