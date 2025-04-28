@@ -5,17 +5,23 @@ public class FalingSpike : MonoBehaviour
 {
     [SerializeField] ParticleSystem hitParticle;
     AudioManager audioManager;
+    Health health;
     Rigidbody2D rb;
+    SpriteRenderer spriteRenderer;
     public bool hasPlayed = false;
-
+    Vector2 initialPosition;
+    bool Destroyed = false;
     void Awake()
     {
         var source = GameObject.FindGameObjectWithTag("Audio");
-
+        var playerState = GameObject.FindGameObjectWithTag("Player");
+        initialPosition = transform.position;
+        spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         if (source != null)
         {
             audioManager = source.GetComponent<AudioManager>();
         }
+        health = playerState.GetComponent<Health>();
     }
 
     void Start()
@@ -26,15 +32,23 @@ public class FalingSpike : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
-        if(hit.collider.tag == "Player")
+        if (health.Dead)
         {
-            if(!hasPlayed) { 
-                hitParticle.Play();
-                hasPlayed = true;
+            Invoke(nameof(Respawn), 1.5f);
+        }
+        if (!Destroyed)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
+            if (hit.collider.tag == "Player")
+            {
+                if (!hasPlayed)
+                {
+                    hitParticle.Play();
+                    hasPlayed = true;
+                }
+
+                rb.simulated = true;
             }
-            
-            rb.simulated = true;
         }
     }
 
@@ -56,6 +70,14 @@ public class FalingSpike : MonoBehaviour
 
     void DestroyThis()
     {
-        Destroy(gameObject);
+        transform.position = new Vector2(transform.position.x+10000, transform.position.y+10000);
+        rb.simulated = false;
+        Destroyed = true;
+        //Destroy(gameObject);
+    }
+    void Respawn()
+    {
+        transform.position = initialPosition;
+        Destroyed = false;
     }
 }

@@ -14,6 +14,7 @@ public class Checkpoint : MonoBehaviour
     void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        DontDestroyOnLoad(gameObject);
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -21,6 +22,7 @@ public class Checkpoint : MonoBehaviour
         {
             audioManager.PlaySFX(audioManager.checkpoint);
             wasChecked = true;
+            //health.initialPosition = transform.position;
             health.initialPosition = transform.position;
         }
     }

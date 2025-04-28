@@ -15,9 +15,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip jump;
     public AudioClip spikeFalling;
     public AudioClip bullet;
-
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
         musicSource.clip = background;
         musicSource.Play();
     }

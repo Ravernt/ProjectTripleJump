@@ -12,6 +12,7 @@ public class Health : MonoBehaviour
     GameObject respawn;
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         var source = GameObject.FindGameObjectWithTag("Audio");
 
         if(source != null)
@@ -31,7 +32,7 @@ public class Health : MonoBehaviour
             // usses current position as respawn point
             initialPosition = transform.position;
         }
-
+        transform.position = initialPosition;
         InitializeBlackoutPanel();
     }
 
@@ -172,7 +173,7 @@ public class Health : MonoBehaviour
             blackoutCanvasGroup.alpha += Time.deltaTime * fadeSpeed;
             yield return null;
         }
-
+        
         // respawn the player
         transform.position = initialPosition;
         CurrentHealth = maxHealth;
@@ -188,15 +189,8 @@ public class Health : MonoBehaviour
             blackoutCanvasGroup.alpha -= Time.deltaTime * fadeSpeed;
             yield return null;
         }
-
         respawnCoroutine = null;
 
-        //RestartScene(); //need to make checkpoints dontDestroyOnLoad before implementing full restarts
-    }
-
-    public void RestartScene()
-    {
-        Scene thisScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(thisScene.name);
+        
     }
 }
