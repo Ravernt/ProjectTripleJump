@@ -49331,11 +49331,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 122461718103161041, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 38.61
+      value: 38.5
       objectReference: {fileID: 0}
     - target: {fileID: 122461718103161041, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 23.36
+      value: 23.23
       objectReference: {fileID: 0}
     - target: {fileID: 122461718103161041, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
       propertyPath: m_LocalPosition.z
@@ -49371,7 +49371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2009181268713121119, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
       propertyPath: unlockAllAbilitiesAtStart
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3554813497592685139, guid: d96b099e3998ba14bb3419e02e9c1693, type: 3}
       propertyPath: m_Name

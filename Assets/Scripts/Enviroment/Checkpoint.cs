@@ -14,7 +14,6 @@ public class Checkpoint : MonoBehaviour
     void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-        DontDestroyOnLoad(gameObject);
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {

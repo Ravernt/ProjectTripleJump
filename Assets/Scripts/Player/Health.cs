@@ -12,7 +12,6 @@ public class Health : MonoBehaviour
     GameObject respawn;
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         var source = GameObject.FindGameObjectWithTag("Audio");
 
         if(source != null)
