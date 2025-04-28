@@ -15,6 +15,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip jump;
     public AudioClip spikeFalling;
     public AudioClip bullet;
+    public AudioClip dash;
+    public AudioClip glideTurnOn;
+    public AudioClip button;
+    public AudioClip landingOnGround;
+    
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
