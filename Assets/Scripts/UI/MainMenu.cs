@@ -1,28 +1,55 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class PauseMenu : MonoBehaviour
 {
     AudioManager audioManager;
+    public static bool isPaused = false;
+    public GameObject pauseMenuUI;
 
     void Awake()
     {
         var manager = GameObject.FindGameObjectWithTag("Audio");
         audioManager = manager.GetComponent<AudioManager>();
     }
-    public void PlayGame()
+
+    void Start()
     {
-        if (audioManager != null)
-            audioManager.PlaySFX(audioManager.button);
-        SceneManager.LoadSceneAsync("Main");
+        Time.timeScale = 1f;
     }
 
-    public void QuitGame()
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+                ContinueGame();
+            else
+                PauseGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f; // Freeze game time
+        isPaused = true;
+    }
+
+    public void ContinueGame()
     {
         if (audioManager != null)
             audioManager.PlaySFX(audioManager.button);
-        Application.Quit();
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f; // Resume game time
+        isPaused = false;
+    }
+
+    public void ReturnToMainMenu()
+    {
+        if (audioManager != null)
+            audioManager.PlaySFX(audioManager.button);
+        SceneManager.LoadScene("MainMenu");
     }
 }
-
