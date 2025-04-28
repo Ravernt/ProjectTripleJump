@@ -29,6 +29,7 @@ public enum PlayerState
 
 public class PlayerController : MonoBehaviour
 {
+    AudioManager audioManager;
     [SerializeField] ScriptableStats stats;
     [SerializeField] private Health health;
     [SerializeField] bool disableKeyInput = false;
@@ -71,6 +72,8 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        var manager = GameObject.FindGameObjectWithTag("Audio");
+        audioManager = manager.GetComponent<AudioManager>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
         Abilities = GetComponent<PlayerAbilities>();
@@ -163,6 +166,8 @@ public class PlayerController : MonoBehaviour
         // Landed on the Ground
         if (!Grounded && groundHit)
         {
+            if (audioManager != null)
+                audioManager.PlaySFX(audioManager.landingOnGround);
             Grounded = true;
             coyoteUsable = true;
             bufferedJumpUsable = true;
@@ -337,6 +342,8 @@ public class PlayerController : MonoBehaviour
     void StartDash()
     {
         IsDashing = true;
+        if (audioManager != null)
+            audioManager.PlaySFX(audioManager.dash);
         dashTime = Time.time + stats.dashDuration;
         dashDirection = Mathf.Sign(FrameInput.Move.x);
         frameVelocity.y = 0;
@@ -372,6 +379,8 @@ public class PlayerController : MonoBehaviour
             CurrentState != PlayerState.Dashing)
 
         {
+            if (audioManager != null)
+                audioManager.PlaySFX(audioManager.glideTurnOn);
             IsGliding = true;
         }
         else
