@@ -44,6 +44,9 @@ public class Health : MonoBehaviour
     [SerializeField] private float fadeSpeed = 2.0f;
     [SerializeField] ParticleSystem hitParticle;
     [SerializeField] ParticleSystem deathParticle;
+    [Space]
+    [SerializeField] Transform heartHolder;
+    [SerializeField] SpriteRenderer[] hearts;
 
     private float thrust = 15f;
     public Vector2 initialPosition;
@@ -65,6 +68,11 @@ public class Health : MonoBehaviour
         CurrentHealth = maxHealth;
     }
 
+    void Update()
+    {
+        heartHolder.position = transform.position;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag == "Hurtful")
@@ -79,6 +87,8 @@ public class Health : MonoBehaviour
 
         if (collision.collider.tag == "InstaKill")
         {
+            CurrentHealth = 0;
+            UpdateHearts();
             Death();
         }
     }
@@ -89,8 +99,9 @@ public class Health : MonoBehaviour
             return;
 
         CurrentHealth -= amount;
+        UpdateHearts();
 
-        if(CurrentHealth <= 0)
+        if (CurrentHealth <= 0)
         {
             Death();
         }
@@ -139,6 +150,15 @@ public class Health : MonoBehaviour
         invincibilityCoroutine = null;
     }
 
+    void UpdateHearts()
+    {
+        for (int i = 0; i < CurrentHealth; i++)
+            hearts[i].color = Color.white;
+
+        for (int i = CurrentHealth; i < hearts.Length; i++)
+            hearts[i].color = Color.black;
+    }
+
     void InitializeBlackoutPanel()
     {
         GameObject canvasObject = new GameObject("BlackoutCanvas");
@@ -176,6 +196,7 @@ public class Health : MonoBehaviour
         // respawn the player
         transform.position = initialPosition;
         CurrentHealth = maxHealth;
+        UpdateHearts();
         spriteRenderer.color = Color.white;
         Dead = false;
         OnRespawn?.Invoke();
@@ -189,7 +210,5 @@ public class Health : MonoBehaviour
             yield return null;
         }
         respawnCoroutine = null;
-
-        
     }
 }

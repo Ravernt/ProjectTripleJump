@@ -1,0 +1,611 @@
+fileFormatVersion: 2
+guid: 0261e38156532504c8c3f7fe784e9f76
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7686786473934909743
+    second: tutorial_triple_jump_0
+  - first:
+      213: -2619876447037178408
+    second: tutorial_triple_jump_1
+  - first:
+      213: 3329943494753011863
+    second: tutorial_triple_jump_2
+  - first:
+      213: -8888312547015718806
+    second: tutorial_triple_jump_3
+  - first:
+      213: 8195377057330914936
+    second: tutorial_triple_jump_4
+  - first:
+      213: 6701216819725783727
+    second: tutorial_triple_jump_5
+  - first:
+      213: -5625460562221373080
+    second: tutorial_triple_jump_6
+  - first:
+      213: 3692824339501065281
+    second: tutorial_triple_jump_7
+  - first:
+      213: -3141470440186601815
+    second: tutorial_triple_jump_8
+  - first:
+      213: 1916641173504120155
+    second: tutorial_triple_jump_9
+  - first:
+      213: 7135638667919770295
+    second: tutorial_triple_jump_10
+  - first:
+      213: -4117706733726029494
+    second: tutorial_triple_jump_11
+  - first:
+      213: 8870602072650502045
+    second: tutorial_triple_jump_12
+  - first:
+      213: -8399992515538618969
+    second: tutorial_triple_jump_13
+  - first:
+      213: -7963568970976153683
+    second: tutorial_triple_jump_14
+  - first:
+      213: -8363357487448798069
+    second: tutorial_triple_jump_15
+  - first:
+      213: 2586698431504547711
+    second: tutorial_triple_jump_16
+  - first:
+      213: -4263348660724548350
+    second: tutorial_triple_jump_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: tutorial_triple_jump_0
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 719
+        width: 37
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f21fa2b5293fcaa60800000000000000
+      internalID: 7686786473934909743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_1
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 728
+        width: 62
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ddbfea804454abd0800000000000000
+      internalID: -2619876447037178408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_2
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 614
+        width: 64
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79840e637f5563e20800000000000000
+      internalID: 3329943494753011863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_3
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 670
+        width: 24
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a680b7ea4de56a480800000000000000
+      internalID: -8888312547015718806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_4
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 592
+        width: 12
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 876689e3304dbb170800000000000000
+      internalID: 8195377057330914936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_5
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 515
+        width: 16
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa2d0a661318ffc50800000000000000
+      internalID: 6701216819725783727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_6
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 511
+        width: 43
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86963d27c695ee1b0800000000000000
+      internalID: -5625460562221373080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_7
+      rect:
+        serializedVersion: 2
+        x: 333
+        y: 542
+        width: 55
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 144a0eddb2c8f3330800000000000000
+      internalID: 3692824339501065281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_8
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 432
+        width: 56
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ae994467414764d0800000000000000
+      internalID: -3141470440186601815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_9
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 500
+        width: 31
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b55d9941ef6499a10800000000000000
+      internalID: 1916641173504120155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_10
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 418
+        width: 24
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b246eeef81e60360800000000000000
+      internalID: 7135638667919770295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_11
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 335
+        width: 13
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a49a60fca87fad6c0800000000000000
+      internalID: -4117706733726029494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_12
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 323
+        width: 56
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9f4d2c2695ba1b70800000000000000
+      internalID: 8870602072650502045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_13
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 272
+        width: 71
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a5716bef4b3d6b80800000000000000
+      internalID: -8399992515538618969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_14
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 289
+        width: 38
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dafa4a4b638bb7190800000000000000
+      internalID: -7963568970976153683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_15
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 230
+        width: 27
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8cc2071da26feb80800000000000000
+      internalID: -8363357487448798069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_16
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 163
+        width: 21
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7f73eeb48cc5e320800000000000000
+      internalID: 2586698431504547711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorial_triple_jump_17
+      rect:
+        serializedVersion: 2
+        x: 755
+        y: 84
+        width: 15
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20d30e33bfa85d4c0800000000000000
+      internalID: -4263348660724548350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      tutorial_triple_jump_0: 7686786473934909743
+      tutorial_triple_jump_1: -2619876447037178408
+      tutorial_triple_jump_10: 7135638667919770295
+      tutorial_triple_jump_11: -4117706733726029494
+      tutorial_triple_jump_12: 8870602072650502045
+      tutorial_triple_jump_13: -8399992515538618969
+      tutorial_triple_jump_14: -7963568970976153683
+      tutorial_triple_jump_15: -8363357487448798069
+      tutorial_triple_jump_16: 2586698431504547711
+      tutorial_triple_jump_17: -4263348660724548350
+      tutorial_triple_jump_2: 3329943494753011863
+      tutorial_triple_jump_3: -8888312547015718806
+      tutorial_triple_jump_4: 8195377057330914936
+      tutorial_triple_jump_5: 6701216819725783727
+      tutorial_triple_jump_6: -5625460562221373080
+      tutorial_triple_jump_7: 3692824339501065281
+      tutorial_triple_jump_8: -3141470440186601815
+      tutorial_triple_jump_9: 1916641173504120155
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

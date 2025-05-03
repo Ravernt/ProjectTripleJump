@@ -6,6 +6,7 @@ public class PowerupPickup : MonoBehaviour
     [SerializeField] private AbilityType abilityToUnlock;
     [SerializeField] private Transform visuals;
     [SerializeField] private Transform background;
+    [SerializeField] private GameObject tutorial;
     AudioManager audioManager;
 
     Sequence mainAnimation;
@@ -33,6 +34,10 @@ public class PowerupPickup : MonoBehaviour
             audioManager.PlaySFX(audioManager.collect);
             player.UnlockAbility(abilityToUnlock);
             ParticleSpawner.Instance.SpawnParticle("powerup_pickup", transform.position);
+
+            if (tutorial != null)
+                tutorial.SetActive(true);
+
             Destroy(gameObject);
         }
     }

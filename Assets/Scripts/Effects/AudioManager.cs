@@ -19,7 +19,14 @@ public class AudioManager : MonoBehaviour
     public AudioClip glideTurnOn;
     public AudioClip button;
     public AudioClip landingOnGround;
+
+    float musicVolume;
     
+    void Awake()
+    {
+        musicVolume = musicSource.volume;
+    }
+
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -32,6 +39,4 @@ public class AudioManager : MonoBehaviour
         SFXSource.PlayOneShot(clip);
     
     }
-
-
 }
