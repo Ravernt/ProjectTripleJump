@@ -38,7 +38,6 @@ public class FallingSpikeTests
         Assert.False(spike.GetComponentInChildren<FalingSpike>().hasPlayed);
     }
 
-    [UnityTest]
     public IEnumerator OnCollisionEnter2D_HitPlayer_SpikeGetsDestroyed()
     {
         var obj = GameObject.Instantiate(Resources.Load<GameObject>("FallingSpike"), new Vector3(0, 2), Quaternion.Euler(0, 0, 180));

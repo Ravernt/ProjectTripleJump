@@ -6,18 +6,16 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] Health health;
     [SerializeField] private bool canReactivate = false;
     bool wasChecked = false;
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
-    }
+
     void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        health = FindAnyObjectByType<Health>();
     }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (!wasChecked || canReactivate)
+        if (collider.CompareTag("Player") && (!wasChecked || canReactivate))
         {
             audioManager.PlaySFX(audioManager.checkpoint);
             wasChecked = true;

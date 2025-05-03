@@ -73,7 +73,8 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         var manager = GameObject.FindGameObjectWithTag("Audio");
-        audioManager = manager.GetComponent<AudioManager>();
+        if(manager != null)
+            audioManager = manager.GetComponent<AudioManager>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
         Abilities = GetComponent<PlayerAbilities>();
@@ -379,9 +380,12 @@ public class PlayerController : MonoBehaviour
             CurrentState != PlayerState.Dashing)
 
         {
-            if (audioManager != null)
-                audioManager.PlaySFX(audioManager.glideTurnOn);
-            IsGliding = true;
+            if(!IsGliding)
+            {
+                if (audioManager != null)
+                    audioManager.PlaySFX(audioManager.glideTurnOn);
+                IsGliding = true;
+            }
         }
         else
         {
