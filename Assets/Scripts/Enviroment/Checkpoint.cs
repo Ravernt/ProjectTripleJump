@@ -42,7 +42,7 @@ public class Checkpoint : MonoBehaviour
                 {
                     //reset to old color, dont forget the checkoint. prefix
                     checkpoint.tempColor = checkpoint.spriteRenderer.color;
-                    checkpoint.tempColor.a = 0f;
+                    //checkpoint.tempColor.a = 0f; 
                     checkpoint.spriteRenderer.color = checkpoint.tempColor;
                     checkpoint.isChecked = false;
                 }
