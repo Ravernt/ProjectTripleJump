@@ -13,7 +13,7 @@ public class ScriptableStats : ScriptableObject
     public float MaxSpeed = 14;
 
     [Tooltip("The player's capacity to gain horizontal speed")]
-    public float Acceleration = 120;
+    public float Acceleration = 12;
 
     [Tooltip("The pace at which the player comes to a stop")]
     public float GroundDeceleration = 60;

@@ -72,6 +72,9 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        // Initialize the player controller
+        stats = Instantiate(stats);
+
         var manager = GameObject.FindGameObjectWithTag("Audio");
         if(manager != null)
             audioManager = manager.GetComponent<AudioManager>();
