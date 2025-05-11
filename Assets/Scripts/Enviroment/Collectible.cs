@@ -25,6 +25,8 @@ public class Collectible : MonoBehaviour
     private Sequence mainAnimation;
     private Sequence backgroundAnimation;
 
+    bool collected = false;
+
     void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
@@ -51,19 +53,24 @@ public class Collectible : MonoBehaviour
     {
         if (perkTextUI == null)
             perkTextUI = Object.FindFirstObjectByType<TextMeshProUGUI>();
+
+        CollectibleManager.Instance.RegisterCollectible();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out PlayerController player))
+        if (!collected && collision.TryGetComponent(out PlayerController player))
         {
+            collected = true;
+            CollectibleManager.Instance.CollectCollectible();
             ApplyPerkToPlayer(player);
             audioManager?.PlaySFX(audioManager.collect);
 
             string msg = string.IsNullOrEmpty(messageOverride) ? GetPerkMessage(perkType) : messageOverride;
-            perkTextUI.text = msg;
+            //perkTextUI.text = msg;
 
-            ParticleSpawner.Instance?.SpawnParticle("collectible_pickup", transform.position);
+            var particle = ParticleSpawner.Instance?.SpawnParticle("collectible_pickup", transform.position);
+            particle.GetComponentInChildren<TMP_Text>().text = msg;
 
             Destroy(gameObject);
         }
