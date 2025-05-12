@@ -39,6 +39,12 @@ public class PlayerController : MonoBehaviour
 
     private int airJumpTimes = 0;
 
+    private float lastGlideSoundTime = 0f;
+    private float glideSoundCooldown = 0.75f;
+
+    private float lastWallSlideSoundTime = 0f;
+    private float wallSlideSoundCooldown = 0.75f;
+
     //Glide mechanics
     public bool IsGliding { private set; get; } = false;
 
@@ -375,26 +381,26 @@ public class PlayerController : MonoBehaviour
 
     //Glide mechanics
     void HandleGlide()
-    {
-        if (Abilities.HasAbility(AbilityType.Glide) &&
-            !Grounded &&
-            rb.linearVelocity.y < 0 &&
+{
+    if (Abilities.HasAbility(AbilityType.Glide) &&
+        !Grounded &&
+        rb.linearVelocity.y < 0 &&
         FrameInput.JumpHeld &&
-            CurrentState != PlayerState.Dashing)
+        CurrentState != PlayerState.Dashing)
+    {
+        IsGliding = true;
 
+        if (audioManager != null && Time.time - lastGlideSoundTime > glideSoundCooldown)
         {
-            if(!IsGliding)
-            {
-                if (audioManager != null)
-                    audioManager.PlaySFX(audioManager.glideTurnOn);
-                IsGliding = true;
-            }
-        }
-        else
-        {
-            IsGliding = false;
+            audioManager.PlaySFX(audioManager.glideTurnOn);
+            lastGlideSoundTime = Time.time;
         }
     }
+    else
+    {
+        IsGliding = false;
+    }
+}
 
     //Wall slide mechanics
     void HandleWallSlide()
