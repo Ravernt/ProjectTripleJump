@@ -5,10 +5,13 @@ public class Checkpoint : MonoBehaviour
     AudioManager audioManager;
     SpriteRenderer spriteRenderer;
     [SerializeField] Health health;
+    [SerializeField] Color activeColor;
+    [SerializeField] Color inactiveColor;
     //[SerializeField] private bool canReactivate = true;
     bool isChecked = false;
     Checkpoint[] checkpoints;
-    Color tempColor;
+
+    static Checkpoint lastCheckpoint;
 
     void Awake()                      
     {
@@ -16,6 +19,8 @@ public class Checkpoint : MonoBehaviour
         health = FindAnyObjectByType<Health>();
         checkpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None);
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        spriteRenderer.color = inactiveColor;
     }
     private void Update()
     {
@@ -33,17 +38,17 @@ public class Checkpoint : MonoBehaviour
         {
             audioManager.PlaySFX(audioManager.checkpoint);
             //set a new color
-            tempColor.a = 250f;
-            spriteRenderer.color = tempColor;
+            //tempColor.a = 250f;
+            spriteRenderer.color = activeColor;
             health.initialPosition = transform.position;
             foreach (Checkpoint checkpoint in checkpoints)
             {
                 if(checkpoint.isChecked)
                 {
                     //reset to old color, dont forget the checkoint. prefix
-                    checkpoint.tempColor = checkpoint.spriteRenderer.color;
+                    //checkpoint.tempColor = checkpoint.spriteRenderer.color;
                     //checkpoint.tempColor.a = 0f; 
-                    checkpoint.spriteRenderer.color = checkpoint.tempColor;
+                    checkpoint.spriteRenderer.color = inactiveColor;
                     checkpoint.isChecked = false;
                 }
             }
