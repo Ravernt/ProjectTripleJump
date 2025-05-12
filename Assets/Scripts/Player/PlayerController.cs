@@ -176,8 +176,11 @@ public class PlayerController : MonoBehaviour
         // Landed on the Ground
         if (!Grounded && groundHit)
         {
-            if (audioManager != null)
+            if (audioManager != null && Time.time - lastWallSlideSoundTime > wallSlideSoundCooldown)
+            {
                 audioManager.PlaySFX(audioManager.landingOnGround);
+                lastWallSlideSoundTime = Time.time;
+            }
             Grounded = true;
             coyoteUsable = true;
             bufferedJumpUsable = true;
