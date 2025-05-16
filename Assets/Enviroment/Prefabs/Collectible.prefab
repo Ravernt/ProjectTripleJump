@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   perkType: 2
-  visuals: {fileID: 0}
+  visuals: {fileID: 1034642385443087204}
   background: {fileID: 0}
   messageOverride: 
-  perkTextUI: {fileID: 0}
