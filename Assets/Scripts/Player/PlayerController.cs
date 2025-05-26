@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.Collections;
+using Unity.Profiling.Memory;
 using UnityEngine;
-using UnityEngine.Playables;
+using UnityEngine.Profiling;
+using System.IO;
 
 public struct FrameInput
 {
@@ -29,6 +33,10 @@ public enum PlayerState
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] GameObject spikePrefab;
+    [SerializeField] Transform spikePosition;
+    [SerializeField] int amount;
+    [Space]
     AudioManager audioManager;
     [SerializeField] ScriptableStats stats;
     [SerializeField] private Health health;
@@ -76,8 +84,12 @@ public class PlayerController : MonoBehaviour
     public bool IsDashing { get; set; } = false;
     public bool CanDash { get; set; } = true;
 
+    int current = 0;
+
     void Awake()
     {
+
+
         // Initialize the player controller
         stats = Instantiate(stats);
 
@@ -133,6 +145,15 @@ public class PlayerController : MonoBehaviour
         }
 
         ApplyMovement();
+    }
+
+    void SpawnSpikes()
+    {
+        for(int i=0; i<amount; i++)
+        {
+            Instantiate(spikePrefab, spikePosition.position + new Vector3(0.5f * current, 0), Quaternion.Euler(0, 0, 0));
+            current++;
+        }
     }
 
     void GatherInput()

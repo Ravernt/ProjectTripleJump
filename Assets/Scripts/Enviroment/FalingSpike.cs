@@ -39,7 +39,7 @@ public class FalingSpike : MonoBehaviour
         if (!Destroyed)
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
-            if (hit.collider.tag == "Player")
+            if (hit.collider != null && hit.collider.tag == "Player")
             {
                 if (!hasPlayed)
                 {

@@ -15,6 +15,7 @@ public enum AbilityType
 public class PlayerAbilities : MonoBehaviour
 {
     [SerializeField] private bool unlockAllAbilitiesAtStart = false;
+    [SerializeField] private bool cheats = false;
 
     Dictionary<AbilityType, bool> unlockedAbilities = new Dictionary<AbilityType, bool>
     {
@@ -40,6 +41,9 @@ public class PlayerAbilities : MonoBehaviour
 
     void Update()
     {
+        if (!cheats)
+            return;
+
         // Press number keys 1–6 (top row) to toggle abilities
         if (Input.GetKeyDown(KeyCode.Alpha1)) ToggleAbility(AbilityType.Dash);
         if (Input.GetKeyDown(KeyCode.Alpha2)) ToggleAbility(AbilityType.DoubleJump);
